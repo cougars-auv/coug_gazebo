@@ -1,1 +1,5 @@
 repositories:
+  coug_description:
+    type: git
+    url: https://github.com/cougars-auv/coug_description.git
+    version: main
