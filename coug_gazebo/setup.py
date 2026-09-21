@@ -28,7 +28,6 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "dem_global_costmap = coug_gazebo.dem_global_costmap_node:main",
             "imu_covariance = coug_gazebo.imu_covariance_node:main",
             "mag_covariance = coug_gazebo.mag_covariance_node:main",
             "navsat_covariance = coug_gazebo.navsat_covariance_node:main",
