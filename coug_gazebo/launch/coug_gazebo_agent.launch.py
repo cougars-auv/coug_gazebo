@@ -1,5 +1,5 @@
-# Copyright (c) 2018 Intel Corporation
-# Copyright (C) 2024 Stevedan Ogochukwu Omodolor Omodia
+# Copyright 2026 BYU FROST Lab
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -195,7 +195,7 @@ def generate_launch_description() -> LaunchDescription:
             ),
             DeclareLaunchArgument(
                 "agent_ns",
-                default_value="rover1sim",
+                default_value="rover1gz",
             ),
             DeclareLaunchArgument(
                 "scenario_param_file",
