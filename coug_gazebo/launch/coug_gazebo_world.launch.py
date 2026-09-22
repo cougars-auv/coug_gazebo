@@ -63,7 +63,8 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     scenario_launch_params = load_launch_params(scenario_param_file.perform(context), "/**")
     world_filename = scenario_launch_params.get("world_file", fleet_launch_params.get("world_file"))
     world_file = os.path.join(coug_gazebo_dir, "worlds", world_filename)
-    world_sdf_file = tempfile.mktemp(prefix="coug_gazebo_", suffix=".sdf")
+    world_sdf_fd, world_sdf_file = tempfile.mkstemp(prefix="coug_gazebo_", suffix=".sdf")
+    os.close(world_sdf_fd)
 
     world_xacro_process = ExecuteProcess(
         cmd=["xacro", "-o", world_sdf_file, ["headless:=", headless], world_file],
