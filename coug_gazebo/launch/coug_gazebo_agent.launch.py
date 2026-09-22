@@ -21,14 +21,20 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitutions import (
     Command,
     EnvironmentVariable,
     LaunchConfiguration,
     PathJoinSubstitution,
+    PythonExpression,
 )
 from launch_ros.actions import Node
 from ros_gz_bridge.actions import RosGzBridge
+
+
+def agent_frame(agent_ns: SomeSubstitutionsType, frame: str) -> PythonExpression:
+    return PythonExpression(["'", agent_ns, f"/{frame}' if '", agent_ns, f"' != '' else '{frame}'"])
 
 
 def load_launch_params(path: str, top_key: str) -> dict[str, Any]:
@@ -132,11 +138,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             extra_bridge_params={
                 "use_sim_time": use_sim_time,
                 "expand_gz_topic_names": True,
-                "override_frame_id": (
-                    f"{agent_ns_str}/depth_camera_optical_link"
-                    if agent_ns_str
-                    else "depth_camera_optical_link"
-                ),
+                "override_frame_id": agent_frame(agent_ns, "depth_camera_optical_link"),
             },
         ),
         Node(
