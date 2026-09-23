@@ -118,5 +118,12 @@
         </visual>
       </link>
     </model>
+
+    <xacro:aruco_tag id="0" pose="74 -553 -5.09 0 0 0" />
+    <xacro:aruco_tag id="1" pose="54 -572 -4.93 0 0 0" />
+    <xacro:aruco_tag id="2" pose="45 -555 -4.39 0 0 0" />
+    <xacro:aruco_tag id="3" pose="50 -593 -5.92 0 0 0" />
+    <xacro:aruco_tag id="4" pose="20 -560 -4.59 0 0 0" />
+    <xacro:aruco_tag id="5" pose="16 -594 -5.88 0 0 0" />
   </world>
 </sdf>
