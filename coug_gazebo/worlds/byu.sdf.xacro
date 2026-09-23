@@ -19,8 +19,8 @@
   <xacro:arg name="headless" default="true" />
 
   <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/byu_terrain" />
-  <xacro:property name="terrain_size" value="1129.9 1629.95 63.61" />
-  <xacro:property name="terrain_z" value="-30.72" />
+  <xacro:property name="terrain_size" value="1129.9 1629.95 63.67" />
+  <xacro:property name="terrain_z" value="-30.74" />
 
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
@@ -43,7 +43,7 @@
       <world_frame_orientation>ENU</world_frame_orientation>
       <latitude_deg>40.2515095</latitude_deg>
       <longitude_deg>-111.6496175</longitude_deg>
-      <elevation>1424.159</elevation>
+      <elevation>1424.162</elevation>
     </spherical_coordinates>
 
     <light type="directional" name="sun">

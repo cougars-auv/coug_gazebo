@@ -19,8 +19,10 @@
   <xacro:arg name="headless" default="true" />
 
   <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/mdrs_terrain" />
-  <xacro:property name="terrain_size" value="2005.08 1996.57 71.3" />
+  <xacro:property name="terrain_size" value="2005.08 1996.57 71.36" />
   <xacro:property name="terrain_z" value="-13.67" />
+  <xacro:property name="aruco_mesh" value="$(find coug_gazebo)/models/urc_aruco_1/meshes/urc_aruco_1.dae" />
+  <xacro:property name="aruco_texture" value="$(find coug_gazebo)/models/urc_aruco_1/meshes/urc_aruco_1.png" />
 
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
@@ -43,7 +45,7 @@
       <world_frame_orientation>ENU</world_frame_orientation>
       <latitude_deg>38.406</latitude_deg>
       <longitude_deg>-110.792</longitude_deg>
-      <elevation>1373.134</elevation>
+      <elevation>1373.153</elevation>
     </spherical_coordinates>
 
     <light type="directional" name="sun">
@@ -88,6 +90,48 @@
                 <size>2005.08</size>
               </texture>
             </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ArUco tag 1 (4X4_50) on a post, beside the rover spawn -->
+    <model name="aruco_1">
+      <static>true</static>
+      <pose>-9 -13 -0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="tag_collision">
+          <geometry>
+            <mesh>
+              <uri>${aruco_mesh}</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="tag_visual">
+          <geometry>
+            <mesh>
+              <uri>${aruco_mesh}</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>${aruco_texture}</albedo_map>
+                <roughness>1.0</roughness>
+                <metalness>0.0</metalness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+        <visual name="post_visual">
+          <pose>0 0 -1.5 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>3.0</length>
+            </cylinder>
           </geometry>
         </visual>
       </link>

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2026 BYU FROST Lab
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="headless" default="true" />
+
+  <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/urc_terrain" />
+  <xacro:property name="terrain_size" value="2000.0 2000.0 85.71" />
+  <xacro:property name="terrain_z" value="-48.88" />
+
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <xacro:unless value="$(arg headless)">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
+      <use_units_gauss>false</use_units_gauss>
+      <use_earth_frame_ned>false</use_earth_frame_ned>
+    </plugin>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>38.418</latitude_deg>
+      <longitude_deg>-110.777</longitude_deg>
+      <elevation>1394.024</elevation>
+    </spherical_coordinates>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <specular>0 0 0 1</specular>
+      <direction>0 0.6 -0.6</direction>
+    </light>
+
+    <scene>
+      <sky />
+    </scene>
+
+    <!-- Heightmaps need the bullet collision detector -->
+    <physics type="dart">
+      <max_step_size>0.003</max_step_size>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
+
+    <model name="urc_terrain">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <pose>0 0 ${terrain_z} 0 0 0</pose>
+          <geometry>
+            <heightmap>
+              <uri>${terrain_dir}/height_map.png</uri>
+              <size>${terrain_size}</size>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <uri>${terrain_dir}/height_map.png</uri>
+              <size>${terrain_size}</size>
+              <pos>0 0 ${terrain_z}</pos>
+              <texture>
+                <diffuse>${terrain_dir}/aerial.png</diffuse>
+                <normal>${terrain_dir}/normal_map.png</normal>
+                <size>2000.0</size>
+              </texture>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
