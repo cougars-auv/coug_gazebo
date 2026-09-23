@@ -21,8 +21,8 @@
   <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/mdrs_terrain" />
   <xacro:property name="terrain_size" value="2005.08 1996.57 71.36" />
   <xacro:property name="terrain_z" value="-13.67" />
-  <xacro:property name="aruco_mesh" value="$(find coug_gazebo)/models/urc_aruco_1/meshes/urc_aruco_1.dae" />
-  <xacro:property name="aruco_texture" value="$(find coug_gazebo)/models/urc_aruco_1/meshes/urc_aruco_1.png" />
+
+  <xacro:include filename="aruco_tag.xacro" />
 
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
@@ -95,46 +95,8 @@
       </link>
     </model>
 
-    <!-- ArUco tag 1 (4X4_50) on a post, beside the rover spawn -->
-    <model name="aruco_1">
-      <static>true</static>
-      <pose>-9 -13 -0.2 0 0 0</pose>
-      <link name="link">
-        <collision name="tag_collision">
-          <geometry>
-            <mesh>
-              <uri>${aruco_mesh}</uri>
-            </mesh>
-          </geometry>
-        </collision>
-        <visual name="tag_visual">
-          <geometry>
-            <mesh>
-              <uri>${aruco_mesh}</uri>
-            </mesh>
-          </geometry>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <pbr>
-              <metal>
-                <albedo_map>${aruco_texture}</albedo_map>
-                <roughness>1.0</roughness>
-                <metalness>0.0</metalness>
-              </metal>
-            </pbr>
-          </material>
-        </visual>
-        <visual name="post_visual">
-          <pose>0 0 -1.5 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>3.0</length>
-            </cylinder>
-          </geometry>
-        </visual>
-      </link>
-    </model>
+    <xacro:aruco_tag id="0" pose="-5 -7 -0.86 0 0 0" />
+    <xacro:aruco_tag id="1" pose="20 27 -0.58 0 0 0" />
+    <xacro:aruco_tag id="2" pose="-72 72 7.54 0 0 0" />
   </world>
 </sdf>

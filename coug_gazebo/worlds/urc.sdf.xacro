@@ -22,6 +22,8 @@
   <xacro:property name="terrain_size" value="2000.0 2000.0 85.71" />
   <xacro:property name="terrain_z" value="-48.88" />
 
+  <xacro:include filename="aruco_tag.xacro" />
+
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
