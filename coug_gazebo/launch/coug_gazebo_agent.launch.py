@@ -68,6 +68,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     agent_camera_bridge_config_file = os.path.join(
         coug_gazebo_dir, "config", "agent_camera_bridge.yaml"
     )
+    thruster_bridge_config_file = os.path.join(coug_gazebo_dir, "config", "thruster_bridge.yaml")
 
     fleet_param_file = PathJoinSubstitution(
         [EnvironmentVariable("CONFIG_DIR"), "fleet", "coug_gazebo_params.yaml"]
@@ -88,7 +89,52 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     urdf_filename = agent_launch_params.get("urdf_file", fleet_launch_params.get("urdf_file"))
     urdf_file = os.path.join(coug_description_dir, "urdf", urdf_filename)
 
+    thrust_actions: list[Action] = []
+    if urdf_filename == "wamv.gazebo.xacro":
+        thrust_actions.append(
+            RosGzBridge(
+                bridge_name="thruster_bridge_node",
+                config_file=thruster_bridge_config_file,
+                container_name="/gazebo_container",
+                namespace=f"/{agent_ns_str}",
+                use_composition=True,
+                extra_bridge_params={
+                    "use_sim_time": use_sim_time,
+                    "expand_gz_topic_names": True,
+                },
+            )
+        )
+        for side, sign in (("left", "-"), ("right", "+")):
+            thrust_actions.append(
+                Node(
+                    package="topic_tools",
+                    executable="transform",
+                    name=f"{side}_thrust_mixer_node",
+                    arguments=[
+                        f"/{agent_ns_str}/cmd_vel_out",
+                        f"/{agent_ns_str}/thrusters/{side}/thrust",
+                        "std_msgs/msg/Float64",
+                        (
+                            "(s := (100.0 * m.linear.x + 150.0 * m.linear.x * abs(m.linear.x))"
+                            " / 2.0, "
+                            "y := (800.0 * m.angular.z + 800.0 * m.angular.z * abs(m.angular.z))"
+                            " / 2.05427, "
+                            f"std_msgs.msg.Float64(data=(s {sign} y)"
+                            " / max(1.0, (abs(s) + abs(y)) / 2353.5)))[-1]"
+                        ),
+                        "--field",
+                        "twist",
+                        "--import",
+                        "std_msgs",
+                        "--wait-for-start",
+                        "--qos-reliability",
+                        "reliable",
+                    ],
+                )
+            )
+
     return [
+        *thrust_actions,
         Node(
             package="ros_gz_sim",
             executable="create",
@@ -119,7 +165,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             ],
         ),
         RosGzBridge(
-            bridge_name="agent_bridge",
+            bridge_name="agent_bridge_node",
             config_file=agent_bridge_config_file,
             container_name="/gazebo_container",
             namespace=f"/{agent_ns_str}",
@@ -130,7 +176,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             },
         ),
         RosGzBridge(
-            bridge_name="agent_camera_bridge",
+            bridge_name="agent_camera_bridge_node",
             config_file=agent_camera_bridge_config_file,
             container_name="/gazebo_container",
             namespace=f"/{agent_ns_str}",
@@ -144,7 +190,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         Node(
             package="topic_tools",
             executable="relay",
-            name="rgb_camera_info_relay",
+            name="rgb_camera_info_relay_node",
             parameters=[
                 fleet_param_file,
                 agent_param_file,
