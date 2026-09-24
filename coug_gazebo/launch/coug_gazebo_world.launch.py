@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import os
 import tempfile
 from typing import Any
 
 import yaml
-from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
 from launch.actions import (
+    AppendEnvironmentVariable,
     DeclareLaunchArgument,
     ExecuteProcess,
     IncludeLaunchDescription,
@@ -70,7 +72,18 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         cmd=["xacro", "-o", world_sdf_file, ["headless:=", headless], world_file],
     )
 
+    resource_actions: list[Action] = []
+    with contextlib.suppress(PackageNotFoundError):
+        resource_actions.append(
+            AppendEnvironmentVariable(
+                "GZ_SIM_RESOURCE_PATH",
+                os.path.dirname(get_package_share_directory("wamv_description")),
+                prepend=True,
+            )
+        )
+
     return [
+        *resource_actions,
         world_xacro_process,
         RegisterEventHandler(
             event_handler=OnShutdown(
@@ -94,7 +107,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                         namespace="",
                     ),
                     RosGzBridge(
-                        bridge_name="clock_bridge",
+                        bridge_name="clock_bridge_node",
                         config_file=clock_bridge_config_file,
                         container_name="/gazebo_container",
                         use_composition=True,
