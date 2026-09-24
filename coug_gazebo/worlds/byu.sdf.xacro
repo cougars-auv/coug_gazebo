@@ -18,82 +18,25 @@
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="headless" default="true" />
 
-  <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/byu_terrain" />
-  <xacro:property name="terrain_size" value="1129.9 1629.95 63.67" />
-  <xacro:property name="terrain_z" value="-30.74" />
+  <xacro:include filename="world_common.xacro" />
 
-  <xacro:include filename="aruco_tag.xacro" />
+  <xacro:property name="terrain_dir" value="$(find coug_gazebo)/models/byu_terrain" />
 
   <world name="default">
-    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
-    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
-    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
-    <xacro:unless value="$(arg headless)">
-      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
-    </xacro:unless>
-    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
-    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
-    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
-      <use_units_gauss>false</use_units_gauss>
-      <use_earth_frame_ned>false</use_earth_frame_ned>
-    </plugin>
-
-    <spherical_coordinates>
-      <surface_model>EARTH_WGS84</surface_model>
-      <world_frame_orientation>ENU</world_frame_orientation>
-      <latitude_deg>40.2515095</latitude_deg>
-      <longitude_deg>-111.6496175</longitude_deg>
-      <elevation>1424.162</elevation>
-    </spherical_coordinates>
-
-    <light type="directional" name="sun">
-      <cast_shadows>true</cast_shadows>
-      <specular>0 0 0 1</specular>
-      <direction>0 0.6 -0.6</direction>
-    </light>
-
+    <xacro:world_systems headless="$(arg headless)" />
+    <xacro:world_origin latitude="40.2515095" longitude="-111.6496175" elevation="1424.162" />
+    <xacro:sun />
     <scene>
       <sky />
     </scene>
+    <xacro:heightmap_physics />
 
-    <!-- Heightmaps need the bullet collision detector -->
-    <physics type="dart">
-      <max_step_size>0.003</max_step_size>
-      <dart>
-        <collision_detector>bullet</collision_detector>
-      </dart>
-    </physics>
-
-    <model name="byu_terrain">
-      <static>true</static>
-      <link name="ground">
-        <collision name="collision">
-          <pose>0 0 ${terrain_z} 0 0 0</pose>
-          <geometry>
-            <heightmap>
-              <uri>${terrain_dir}/height_map.png</uri>
-              <size>${terrain_size}</size>
-            </heightmap>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <heightmap>
-              <uri>${terrain_dir}/height_map.png</uri>
-              <size>${terrain_size}</size>
-              <pos>0 0 ${terrain_z}</pos>
-              <texture>
-                <diffuse>${terrain_dir}/aerial.png</diffuse>
-                <normal>${terrain_dir}/normal_map.png</normal>
-                <size>1629.95</size>
-              </texture>
-            </heightmap>
-          </geometry>
-        </visual>
-      </link>
-    </model>
+    <xacro:heightmap_terrain
+      name="byu_terrain"
+      dir="${terrain_dir}"
+      size="1129.9 1629.95 63.67"
+      z="-30.74"
+    />
 
     <model name="byu_buildings">
       <static>true</static>

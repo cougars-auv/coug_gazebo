@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2026 BYU FROST Lab
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<sdf xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="world_systems" params="headless">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <xacro:unless value="${headless}">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
+      <use_units_gauss>false</use_units_gauss>
+      <use_earth_frame_ned>false</use_earth_frame_ned>
+    </plugin>
+  </xacro:macro>
+
+  <xacro:macro name="world_origin" params="latitude longitude elevation">
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>${latitude}</latitude_deg>
+      <longitude_deg>${longitude}</longitude_deg>
+      <elevation>${elevation}</elevation>
+    </spherical_coordinates>
+  </xacro:macro>
+
+  <xacro:macro name="sun" params="direction:='0 0.6 -0.6'">
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <specular>0 0 0 1</specular>
+      <direction>${direction}</direction>
+    </light>
+  </xacro:macro>
+
+  <xacro:macro name="heightmap_physics">
+    <physics type="dart">
+      <max_step_size>0.003</max_step_size>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
+  </xacro:macro>
+
+  <xacro:macro name="heightmap_terrain" params="name dir size z">
+    <model name="${name}">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <pose>0 0 ${z} 0 0 0</pose>
+          <geometry>
+            <heightmap>
+              <uri>${dir}/height_map.png</uri>
+              <size>${size}</size>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <uri>${dir}/height_map.png</uri>
+              <size>${size}</size>
+              <pos>0 0 ${z}</pos>
+              <texture>
+                <diffuse>${dir}/aerial.png</diffuse>
+                <normal>${dir}/normal_map.png</normal>
+                <size>${max(float(size.split()[0]), float(size.split()[1]))}</size>
+              </texture>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+  </xacro:macro>
+
+  <xacro:macro name="aruco_tag" params="id pose height:=1.0">
+    <model name="aruco_${id}">
+      <static>true</static>
+      <pose>${pose}</pose>
+      <link name="link">
+        <visual name="tag_visual">
+          <pose>0 0 ${height} 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>$(find coug_gazebo)/models/urc_aruco_${id}/meshes/urc_aruco_${id}.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="post_visual">
+          <pose>0 0 ${(height - 0.5) / 2} 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>${height + 0.5}</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+  </xacro:macro>
+</sdf>
