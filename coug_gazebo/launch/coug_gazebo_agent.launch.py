@@ -62,7 +62,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     )
 
     config_dir = os.environ["CONFIG_DIR"]
-    coug_description_dir = get_package_share_directory("coug_description")
     coug_gazebo_dir = get_package_share_directory("coug_gazebo")
 
     agent_bridge_config_file = os.path.join(coug_gazebo_dir, "config", "agent_bridge.yaml")
@@ -89,7 +88,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         **load_launch_params(scenario_param_path, f"/{agent_ns_str}"),
     }
     urdf_filename = launch_params["urdf_file"]
-    urdf_file = os.path.join(coug_description_dir, "urdf", urdf_filename)
+    urdf_file = os.path.join(coug_gazebo_dir, "urdf", urdf_filename)
 
     thrust_actions: list[Action] = []
     if urdf_filename == "wamv.gazebo.xacro":

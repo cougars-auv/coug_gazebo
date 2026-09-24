@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2026 BYU FROST Lab
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<robot name="wamv_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="agent_ns" default="wamv1gz" />
+  <xacro:property name="agent_ns" value="$(arg agent_ns)" />
+
+  <xacro:arg name="tf_prefix" default="$(arg agent_ns)/" />
+
+  <xacro:include filename="$(find coug_description)/urdf/wamv.urdf.xacro" />
+  <xacro:include filename="$(find coug_gazebo)/urdf/sensors.gazebo.xacro" />
+
+  <xacro:include filename="$(find wamv_gazebo)/urdf/dynamics/wamv_gazebo_dynamics_plugin.xacro" />
+  <xacro:usv_dynamics_gazebo name="wamv_dynamics_plugin" />
+
+  <!-- Gazebo plugins -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>/${agent_ns}/joint_states</topic>
+    </plugin>
+
+    <xacro:truth_odometry base_frame="${tf_prefix}base_link" />
+
+    <xacro:camera_odometry camera_frame="${tf_prefix}depth_camera_link"
+      xyz="${wamv_depth_camera_xyz}" rpy="${wamv_depth_camera_rpy}" />
+  </gazebo>
+
+  <!-- Gazebo sensors -->
+  <xacro:imu_sensors link="${tf_prefix}imu_link" />
+  <xacro:gps_sensor link="${tf_prefix}gps_link" />
+  <xacro:depth_camera_sensor link="${tf_prefix}depth_camera_link" />
+
+</robot>
