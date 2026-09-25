@@ -69,7 +69,9 @@
         <topic>/${agent_ns}/camera/imu/data_raw</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <imu>
-          <enable_orientation>false</enable_orientation>
+          <orientation_reference_frame>
+            <localization>ENU</localization>
+          </orientation_reference_frame>
           <!-- 0.007 °/s/√Hz * √100 Hz -> 1.2e-3 rad/s
             0.0016 m/s^2/√Hz * √100 Hz -> 1.6e-2 m/s^2
             https://github.com/stereolabs/zed-sdk/issues/487

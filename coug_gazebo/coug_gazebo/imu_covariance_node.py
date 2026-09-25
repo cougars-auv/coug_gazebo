@@ -17,20 +17,16 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_system_default
 from sensor_msgs.msg import Imu
 
-_UNKNOWN_COVARIANCE = -1.0
-
 
 class ImuCovarianceNode(Node):
     def __init__(self) -> None:
         super().__init__("imu_covariance_node")
 
         self.declare_parameter("orientation_noise_sigmas", [0.05, 0.05, 0.05])
-        self.declare_parameter("enable_orientation", False)
         self.declare_parameter("input_topic", "camera/imu/data_gz")
         self.declare_parameter("output_topic", "camera/imu/data_raw")
 
         self._orientation_noise_sigmas = self.get_parameter("orientation_noise_sigmas").value
-        self._enable_orientation = self.get_parameter("enable_orientation").value
         input_topic = self.get_parameter("input_topic").value
         output_topic = self.get_parameter("output_topic").value
 
@@ -43,12 +39,9 @@ class ImuCovarianceNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _imu_callback(self, msg: Imu) -> None:
-        if self._enable_orientation:
-            msg.orientation_covariance[0] = self._orientation_noise_sigmas[0] ** 2
-            msg.orientation_covariance[4] = self._orientation_noise_sigmas[1] ** 2
-            msg.orientation_covariance[8] = self._orientation_noise_sigmas[2] ** 2
-        else:
-            msg.orientation_covariance[0] = _UNKNOWN_COVARIANCE
+        msg.orientation_covariance[0] = self._orientation_noise_sigmas[0] ** 2
+        msg.orientation_covariance[4] = self._orientation_noise_sigmas[1] ** 2
+        msg.orientation_covariance[8] = self._orientation_noise_sigmas[2] ** 2
 
         self._output_pub.publish(msg)
 
