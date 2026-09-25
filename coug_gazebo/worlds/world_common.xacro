@@ -80,7 +80,7 @@
               <size>${size}</size>
               <pos>0 0 ${z}</pos>
               <texture>
-                <diffuse>${dir}/aerial.png</diffuse>
+                <diffuse>${dir}/aerial.jpg</diffuse>
                 <normal>${dir}/normal_map.png</normal>
                 <size>${max(float(size.split()[0]), float(size.split()[1]))}</size>
               </texture>

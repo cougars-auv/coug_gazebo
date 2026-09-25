@@ -29,10 +29,10 @@
     </scene>
     <xacro:heightmap_physics />
 
-    <xacro:heightmap_terrain name="mdrs_terrain" dir="$(find coug_gazebo)/models/mdrs_terrain" size="2005.08 1996.57 71.36" z="-13.67" />
+    <xacro:heightmap_terrain name="mdrs_terrain" dir="$(find coug_gazebo)/models/mdrs_terrain" size="2000.00 2000.00 71.30" z="-13.67" />
 
-    <xacro:urc_aruco_w_post id="0" pose="-5 -7 -0.86 0 0 0" />
-    <xacro:urc_aruco_w_post id="1" pose="20 27 -0.58 0 0 0" />
-    <xacro:urc_aruco_w_post id="2" pose="-72 72 7.54 0 0 0" />
+    <xacro:urc_aruco_w_post id="0" pose="-5 -7 -0.79 0 0 0" />
+    <xacro:urc_aruco_w_post id="1" pose="20 27 -0.53 0 0 0" />
+    <xacro:urc_aruco_w_post id="2" pose="-72 72 7.28 0 0 0" />
   </world>
 </sdf>

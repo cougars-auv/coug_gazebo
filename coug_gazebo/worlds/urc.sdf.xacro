@@ -29,6 +29,6 @@
     </scene>
     <xacro:heightmap_physics />
 
-    <xacro:heightmap_terrain name="urc_terrain" dir="$(find coug_gazebo)/models/urc_terrain" size="2000.0 2000.0 85.71" z="-48.88" />
+    <xacro:heightmap_terrain name="urc_terrain" dir="$(find coug_gazebo)/models/urc_terrain" size="2000.00 2000.00 85.66" z="-48.85" />
   </world>
 </sdf>
