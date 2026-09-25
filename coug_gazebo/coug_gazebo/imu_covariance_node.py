@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
+
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_system_default
@@ -24,15 +26,21 @@ class ImuCovarianceNode(Node):
     def __init__(self) -> None:
         super().__init__("imu_covariance_node")
 
+        self.declare_parameter("gravity", 9.8)
+        self.declare_parameter("gravity_tolerance", 2.0)
         self.declare_parameter("orientation_noise_sigmas", [0.05, 0.05, 0.05])
         self.declare_parameter("enable_orientation", False)
         self.declare_parameter("input_topic", "camera/imu/data_gz")
         self.declare_parameter("output_topic", "camera/imu/data_raw")
 
+        self._gravity = self.get_parameter("gravity").value
+        self._gravity_tolerance = self.get_parameter("gravity_tolerance").value
         self._orientation_noise_sigmas = self.get_parameter("orientation_noise_sigmas").value
         self._enable_orientation = self.get_parameter("enable_orientation").value
         input_topic = self.get_parameter("input_topic").value
         output_topic = self.get_parameter("output_topic").value
+
+        self._gravity_seen = False
 
         self._input_sub = self.create_subscription(
             Imu, input_topic, self._imu_callback, qos_profile_system_default
@@ -43,6 +51,12 @@ class ImuCovarianceNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _imu_callback(self, msg: Imu) -> None:
+        if not self._gravity_seen:
+            a = msg.linear_acceleration
+            if abs(math.hypot(a.x, a.y, a.z) - self._gravity) > self._gravity_tolerance:
+                return
+            self._gravity_seen = True
+
         if self._enable_orientation:
             msg.orientation_covariance[0] = self._orientation_noise_sigmas[0] ** 2
             msg.orientation_covariance[4] = self._orientation_noise_sigmas[1] ** 2
