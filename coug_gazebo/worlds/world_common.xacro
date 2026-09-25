@@ -100,7 +100,7 @@
           <pose>0 0 ${height} 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>$(find coug_gazebo)/models/urc_aruco_${id}/meshes/urc_aruco_${id}.dae</uri>
+              <uri>$(find coug_gazebo)/models/urc_aruco_${id}/urc_aruco_${id}.dae</uri>
             </mesh>
           </geometry>
         </visual>
