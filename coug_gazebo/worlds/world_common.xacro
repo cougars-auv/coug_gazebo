@@ -91,29 +91,11 @@
     </model>
   </xacro:macro>
 
-  <xacro:macro name="aruco_tag" params="id pose height:=1.0">
-    <model name="aruco_${id}">
-      <static>true</static>
+  <xacro:macro name="urc_aruco_w_post" params="id pose">
+    <include>
+      <uri>model://urc_aruco_${id}_w_post</uri>
+      <name>aruco_${id}</name>
       <pose>${pose}</pose>
-      <link name="link">
-        <visual name="tag_visual">
-          <pose>0 0 ${height} 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>$(find coug_gazebo)/models/urc_aruco_${id}/urc_aruco_${id}.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <visual name="post_visual">
-          <pose>0 0 ${(height - 0.5) / 2} 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>${height + 0.5}</length>
-            </cylinder>
-          </geometry>
-        </visual>
-      </link>
-    </model>
+    </include>
   </xacro:macro>
 </sdf>

@@ -72,7 +72,11 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         cmd=["xacro", "-o", world_sdf_file, ["headless:=", headless], world_file],
     )
 
-    resource_actions: list[Action] = []
+    resource_actions: list[Action] = [
+        AppendEnvironmentVariable(
+            "GZ_SIM_RESOURCE_PATH", os.path.join(coug_gazebo_dir, "models"), prepend=True
+        )
+    ]
     with contextlib.suppress(PackageNotFoundError):
         resource_actions.append(
             AppendEnvironmentVariable(

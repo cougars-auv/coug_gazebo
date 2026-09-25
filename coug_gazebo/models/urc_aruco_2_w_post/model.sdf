@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="urc_aruco_2_w_post">
+    <static>true</static>
+    <include>
+      <uri>model://urc_aruco_2</uri>
+      <pose>0 0 1.0 0 0 0</pose>
+    </include>
+    <link name="post">
+      <visual name="visual">
+        <pose>0 0 0.25 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.02</radius>
+            <length>1.5</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>
