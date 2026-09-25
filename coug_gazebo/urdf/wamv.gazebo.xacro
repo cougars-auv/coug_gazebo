@@ -36,8 +36,7 @@
 
     <xacro:truth_odometry base_frame="${tf_prefix}base_link" />
 
-    <xacro:camera_odometry camera_frame="${tf_prefix}depth_camera_link"
-      xyz="${wamv_depth_camera_xyz}" rpy="${wamv_depth_camera_rpy}" />
+    <xacro:camera_odometry camera_frame="${tf_prefix}depth_camera_link" xyz="${wamv_depth_camera_xyz}" rpy="${wamv_depth_camera_rpy}" />
   </gazebo>
 
   <!-- Gazebo sensors -->

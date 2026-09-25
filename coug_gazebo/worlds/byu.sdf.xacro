@@ -31,12 +31,7 @@
     </scene>
     <xacro:heightmap_physics />
 
-    <xacro:heightmap_terrain
-      name="byu_terrain"
-      dir="${terrain_dir}"
-      size="1129.9 1629.95 63.67"
-      z="-30.74"
-    />
+    <xacro:heightmap_terrain name="byu_terrain" dir="${terrain_dir}" size="1129.9 1629.95 63.67" z="-30.74" />
 
     <model name="byu_buildings">
       <static>true</static>
