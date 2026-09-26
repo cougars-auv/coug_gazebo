@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
   <asset>
-    <contributor>
-      <author>Nelson Durrant</author>
-    </contributor>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -27,9 +24,6 @@
         </newparam>
         <technique sid="common">
           <lambert>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
             <diffuse>
               <texture texture="marker-sampler" texcoord="UVMap"/>
             </diffuse>
