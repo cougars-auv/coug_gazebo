@@ -49,12 +49,26 @@
           <specular>0.1 0.1 0.1 1</specular>
         </material>
       </visual>
-      <visual name="symbol">
-        <pose>0.0716 0.005 0.2102 1.5708 0 0</pose>
+      <visual name="symbol_0">
+        <pose>0.0716 0.004 0.2102 1.5708 0 0</pose>
         <geometry>
           <mesh>
             <uri>model://symbol_triangle/mesh/triangle.dae</uri>
-            <scale>0.238 0.2443 5</scale>
+            <scale>0.238 0.2443 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.0044 0.0044 0.0044 1</ambient>
+          <diffuse>0.0044 0.0044 0.0044 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
+      </visual>
+      <visual name="symbol_1">
+        <pose>0.0716 -0.004 0.2102 1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://symbol_triangle/mesh/triangle.dae</uri>
+            <scale>0.238 0.2443 1</scale>
           </mesh>
         </geometry>
         <material>
