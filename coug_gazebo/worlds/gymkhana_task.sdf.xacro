@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <!--
- Derived from vrx_gz/worlds/gymkhana_task.sdf in VRX v3.1.2 (https://github.com/osrf/vrx),
- Copyright Open Source Robotics Foundation and VRX contributors.
- Modifications Copyright 2026 BYU FROST Lab.
+ Copyright 2026 BYU FROST Lab
+ Modified from the VRX gymkhana_task world (https://github.com/osrf/vrx).
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,12 +14,6 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-
- Changes:
- - Xacro "headless" arg gates SceneBroadcaster.
- - Magnetometer uses tesla/ENU.
- - USVWind targets "wamv1gz".
- - VRX scoring plugins removed.
 -->
 
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
