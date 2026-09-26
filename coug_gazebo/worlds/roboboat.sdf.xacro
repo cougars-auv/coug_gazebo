@@ -565,6 +565,16 @@
       <pose relative_to="roboboat_course">21.849 5.46 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_yellow</uri>
     </include>
+    <include>
+      <name>t3_a2_black_1</name>
+      <pose relative_to="roboboat_course">21.199 4.71 0.12 0 0 0</pose>
+      <uri>model://roboboat_polyform_a2_black</uri>
+    </include>
+    <include>
+      <name>t3_a2_black_2</name>
+      <pose relative_to="roboboat_course">12.095 2.99 0.12 0 0 0</pose>
+      <uri>model://roboboat_polyform_a2_black</uri>
+    </include>
 
     <!-- Task 4: delivery vessels -->
     <include>

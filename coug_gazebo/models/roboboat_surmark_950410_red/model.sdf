@@ -3,7 +3,7 @@
   <model name="roboboat_surmark_950410_red">
     <link name="link">
       <inertial>
-        <pose>0 0 -0.115 0 0 0</pose>
+        <pose>0 0 -0.2648 0 0 0</pose>
         <mass>34.8721</mass>
         <inertia>
           <ixx>4.73679</ixx>
@@ -45,6 +45,13 @@
         </material>
       </visual>
     </link>
+    <joint name="mooring" type="prismatic">
+      <parent>world</parent>
+      <child>link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
     <plugin name="vrx::PolyhedraBuoyancyDrag" filename="libPolyhedraBuoyancyDrag.so">
       <linear_drag>25</linear_drag>
       <angular_drag>2</angular_drag>
