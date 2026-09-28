@@ -189,17 +189,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             },
         ),
         Node(
-            package="topic_tools",
-            executable="relay",
-            name="rgb_camera_info_relay_node",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
-            ],
-        ),
-        Node(
             package="coug_gazebo",
             executable="imu_covariance",
             name="imu_covariance_node",
