@@ -16,243 +16,246 @@
 -->
 
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <frame name="roboboat_course">
-      <pose>-248.5 1081 0 0 0 1.5708</pose>
-    </frame>
+  <model name="roboboat_course">
+    <pose>-248.5 1081 0 0 0 1.5708</pose>
+    <link name="origin">
+      <gravity>false</gravity>
+    </link>
 
     <include>
       <name>bounds_surmark_white_1</name>
-      <pose relative_to="roboboat_course">-26.849 -22.778 0 0 0 0</pose>
+      <pose>-26.849 -22.778 0 0 0 0</pose>
       <uri>model://roboboat_surmark_46104_white</uri>
     </include>
     <include>
       <name>bounds_surmark_white_2</name>
-      <pose relative_to="roboboat_course">26.849 -22.778 0 0 0 0</pose>
+      <pose>26.849 -22.778 0 0 0 0</pose>
       <uri>model://roboboat_surmark_46104_white</uri>
     </include>
     <include>
       <name>bounds_surmark_white_3</name>
-      <pose relative_to="roboboat_course">-26.849 22.778 0 0 0 0</pose>
+      <pose>-26.849 22.778 0 0 0 0</pose>
       <uri>model://roboboat_surmark_46104_white</uri>
     </include>
     <include>
       <name>bounds_surmark_white_4</name>
-      <pose relative_to="roboboat_course">26.849 22.778 0 0 0 0</pose>
+      <pose>26.849 22.778 0 0 0 0</pose>
       <uri>model://roboboat_surmark_46104_white</uri>
     </include>
 
     <!-- Task 1: entry/exit gates -->
     <include>
       <name>t1_surmark_red_1</name>
-      <pose relative_to="roboboat_course">-21.849 -17.207 0 0 0 0</pose>
+      <pose>-21.849 -17.207 0 0 0 0</pose>
       <uri>model://roboboat_surmark_950410_red</uri>
     </include>
     <include>
       <name>t1_surmark_green_1</name>
-      <pose relative_to="roboboat_course">-19.409 -17.207 0 0 0 0</pose>
+      <pose>-19.409 -17.207 0 0 0 0</pose>
       <uri>model://roboboat_surmark_950400_green</uri>
     </include>
     <include>
       <name>t1_surmark_red_2</name>
-      <pose relative_to="roboboat_course">-21.849 -8.063 0 0 0 0</pose>
+      <pose>-21.849 -8.063 0 0 0 0</pose>
       <uri>model://roboboat_surmark_950410_red</uri>
     </include>
     <include>
       <name>t1_surmark_green_2</name>
-      <pose relative_to="roboboat_course">-19.409 -8.063 0 0 0 0</pose>
+      <pose>-19.409 -8.063 0 0 0 0</pose>
       <uri>model://roboboat_surmark_950400_green</uri>
     </include>
 
     <!-- Task 2: navigation channel and debris field -->
     <include>
       <name>t2_a0_red_1</name>
-      <pose relative_to="roboboat_course">-16.566 5.143 0.05 0 0 0</pose>
+      <pose>-16.566 5.143 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_red</uri>
     </include>
     <include>
       <name>t2_a0_green_1</name>
-      <pose relative_to="roboboat_course">-14.089 5.143 0.05 0 0 0</pose>
+      <pose>-14.089 5.143 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_green</uri>
     </include>
     <include>
       <name>t2_a0_red_2</name>
-      <pose relative_to="roboboat_course">-16.47 8.127 0.05 0 0 0</pose>
+      <pose>-16.47 8.127 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_red</uri>
     </include>
     <include>
       <name>t2_a0_green_2</name>
-      <pose relative_to="roboboat_course">-13.994 8.095 0.05 0 0 0</pose>
+      <pose>-13.994 8.095 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_green</uri>
     </include>
     <include>
       <name>t2_a0_red_3</name>
-      <pose relative_to="roboboat_course">-15.296 11.714 0.05 0 0 0</pose>
+      <pose>-15.296 11.714 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_red</uri>
     </include>
     <include>
       <name>t2_a0_green_3</name>
-      <pose relative_to="roboboat_course">-13.073 10.73 0.05 0 0 0</pose>
+      <pose>-13.073 10.73 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_green</uri>
     </include>
     <include>
       <name>t2_a0_red_4</name>
-      <pose relative_to="roboboat_course">-12.883 14.064 0.05 0 0 0</pose>
+      <pose>-12.883 14.064 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_red</uri>
     </include>
     <include>
       <name>t2_a0_green_4</name>
-      <pose relative_to="roboboat_course">-11.296 12.159 0.05 0 0 0</pose>
+      <pose>-11.296 12.159 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_green</uri>
     </include>
     <include>
       <name>t2_a0_black_1</name>
-      <pose relative_to="roboboat_course">-15.677 8.254 0.05 0 0 0</pose>
+      <pose>-15.677 8.254 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_a0_black_2</name>
-      <pose relative_to="roboboat_course">-13.804 10.445 0.05 0 0 0</pose>
+      <pose>-13.804 10.445 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_a0_black_3</name>
-      <pose relative_to="roboboat_course">-11.899 13.81 0.05 0 0 0</pose>
+      <pose>-11.899 13.81 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_a0_black_4</name>
-      <pose relative_to="roboboat_course">-9.169 13.016 0.05 0 0 0</pose>
+      <pose>-9.169 13.016 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_a0_black_5</name>
-      <pose relative_to="roboboat_course">-8.375 10.667 0.05 0 0 0</pose>
+      <pose>-8.375 10.667 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_a0_black_6</name>
-      <pose relative_to="roboboat_course">-6.089 14.54 0.05 0 0 0</pose>
+      <pose>-6.089 14.54 0.05 0 0 0</pose>
       <uri>model://roboboat_polyform_a0_black</uri>
     </include>
     <include>
       <name>t2_indicator_buoy_red_1</name>
-      <pose relative_to="roboboat_course">-7.994 15.111 0 0 0 0</pose>
+      <pose>-7.994 15.111 0 0 0 0</pose>
       <uri>model://roboboat_color_indicator_buoy_red</uri>
     </include>
     <include>
       <name>t2_indicator_buoy_green_1</name>
-      <pose relative_to="roboboat_course">-6.534 12.572 0 0 0 0</pose>
+      <pose>-6.534 12.572 0 0 0 0</pose>
       <uri>model://roboboat_color_indicator_buoy_green</uri>
     </include>
     <include>
       <name>t2_vessel_black_1</name>
-      <pose relative_to="roboboat_course">-10.121 15.111 0 0 0 1.745</pose>
+      <pose>-10.121 15.111 0 0 0 1.745</pose>
       <uri>model://roboboat_vessel_black</uri>
     </include>
 
     <!-- Task 3: speed challenge -->
     <include>
       <name>t3_a2_red_1</name>
-      <pose relative_to="roboboat_course">6.609 6.68 0.12 0 0 0</pose>
+      <pose>6.609 6.68 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_red</uri>
     </include>
     <include>
       <name>t3_a2_green_1</name>
-      <pose relative_to="roboboat_course">6.609 4.24 0.12 0 0 0</pose>
+      <pose>6.609 4.24 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_green</uri>
     </include>
     <include>
       <name>t3_indicator_buoy_red_1</name>
-      <pose relative_to="roboboat_course">12.705 5.46 0 0 0 0</pose>
+      <pose>12.705 5.46 0 0 0 0</pose>
       <uri>model://roboboat_color_indicator_buoy_red</uri>
     </include>
     <include>
       <name>t3_a2_yellow_1</name>
-      <pose relative_to="roboboat_course">21.849 5.46 0.12 0 0 0</pose>
+      <pose>21.849 5.46 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_yellow</uri>
     </include>
     <include>
       <name>t3_a2_black_1</name>
-      <pose relative_to="roboboat_course">21.199 4.71 0.12 0 0 0</pose>
+      <pose>21.199 4.71 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_black</uri>
     </include>
     <include>
       <name>t3_a2_black_2</name>
-      <pose relative_to="roboboat_course">12.095 2.99 0.12 0 0 0</pose>
+      <pose>12.095 2.99 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_black</uri>
     </include>
 
     <!-- Task 4: delivery vessels -->
     <include>
       <name>t4_vessel_yellow_1</name>
-      <pose relative_to="roboboat_course">11.942 17.778 0 0 0 -0.349</pose>
+      <pose>11.942 17.778 0 0 0 -0.349</pose>
       <uri>model://roboboat_vessel_yellow</uri>
     </include>
     <include>
       <name>t4_vessel_yellow_2</name>
-      <pose relative_to="roboboat_course">19.561 -3.936 0 0 0 0.524</pose>
+      <pose>19.561 -3.936 0 0 0 0.524</pose>
       <uri>model://roboboat_vessel_yellow</uri>
     </include>
     <include>
       <name>t4_vessel_black_1</name>
-      <pose relative_to="roboboat_course">-4.058 -1.905 0 0 0 0.349</pose>
+      <pose>-4.058 -1.905 0 0 0 0.349</pose>
       <uri>model://roboboat_vessel_black</uri>
     </include>
 
     <!-- Task 5: docking -->
     <include>
       <name>t5_dock_s_1</name>
-      <pose relative_to="roboboat_course">-1.994 -16.254 0 0 0 -1.571</pose>
+      <pose>-1.994 -16.254 0 0 0 -1.571</pose>
       <uri>model://roboboat_dock_s</uri>
     </include>
     <include>
       <name>t5_dock_n_1</name>
-      <pose relative_to="roboboat_course">7.086 -16.254 0 0 0 1.571</pose>
+      <pose>7.086 -16.254 0 0 0 1.571</pose>
       <uri>model://roboboat_dock_n</uri>
     </include>
     <include>
       <name>t5_indicator_red_1</name>
-      <pose relative_to="roboboat_course">-1.74 -13.714 0.33 0 0 0</pose>
+      <pose>-1.74 -13.714 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_red</uri>
     </include>
     <include>
       <name>t5_vessel_yellow_1</name>
-      <pose relative_to="roboboat_course">-0.215 -13.714 0 0 0 3.142</pose>
+      <pose>-0.215 -13.714 0 0 0 3.142</pose>
       <uri>model://roboboat_vessel_yellow</uri>
     </include>
     <include>
       <name>t5_indicator_green_1</name>
-      <pose relative_to="roboboat_course">-1.74 -15.746 0.33 0 0 0</pose>
+      <pose>-1.74 -15.746 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_green</uri>
     </include>
     <include>
       <name>t5_indicator_red_2</name>
-      <pose relative_to="roboboat_course">-1.74 -17.778 0.33 0 0 0</pose>
+      <pose>-1.74 -17.778 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_red</uri>
     </include>
     <include>
       <name>t5_indicator_green_2</name>
-      <pose relative_to="roboboat_course">6.832 -13.714 0.33 0 0 0</pose>
+      <pose>6.832 -13.714 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_green</uri>
     </include>
     <include>
       <name>t5_indicator_red_3</name>
-      <pose relative_to="roboboat_course">6.832 -15.746 0.33 0 0 0</pose>
+      <pose>6.832 -15.746 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_red</uri>
     </include>
     <include>
       <name>t5_indicator_red_4</name>
-      <pose relative_to="roboboat_course">6.832 -17.778 0.33 0 0 0</pose>
+      <pose>6.832 -17.778 0.33 0 0 0</pose>
       <uri>model://roboboat_color_indicator_red</uri>
     </include>
     <include>
       <name>t5_vessel_black_1</name>
-      <pose relative_to="roboboat_course">5.307 -17.778 0 0 0 0</pose>
+      <pose>5.307 -17.778 0 0 0 0</pose>
       <uri>model://roboboat_vessel_black</uri>
     </include>
     <include>
       <name>t5_a2_yellow_1</name>
-      <pose relative_to="roboboat_course">-0.494 -10.436 0.12 0 0 0</pose>
+      <pose>-0.494 -10.436 0.12 0 0 0</pose>
       <uri>model://roboboat_polyform_a2_yellow</uri>
     </include>
+  </model>
 </sdf>
