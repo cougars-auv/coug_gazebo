@@ -18,26 +18,110 @@
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="headless" default="true" />
 
-  <xacro:include filename="world_common.xacro" />
-
   <world name="default">
-    <xacro:world_systems headless="$(arg headless)" />
-    <xacro:world_origin latitude="38.406" longitude="-110.792" elevation="1373.153" />
-    <xacro:sun />
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <xacro:unless value="$(arg headless)">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
+      <use_units_gauss>false</use_units_gauss>
+      <use_earth_frame_ned>false</use_earth_frame_ned>
+    </plugin>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>38.406</latitude_deg>
+      <longitude_deg>-110.792</longitude_deg>
+      <elevation>1373.153</elevation>
+    </spherical_coordinates>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <specular>0 0 0 1</specular>
+      <direction>0 0.6 -0.6</direction>
+    </light>
     <scene>
       <sky />
     </scene>
-    <xacro:heightmap_physics />
 
-    <xacro:heightmap_terrain name="mdrs_terrain" dir="$(find coug_gazebo)/models/urc/mdrs_terrain" size="2000.00 2000.00 71.30" z="-13.67" />
+    <physics type="dart">
+      <max_step_size>0.003</max_step_size>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
 
-    <xacro:urc_aruco_w_post id="0" pose="-19.35 -28.73 -1.79 0 0 -1.63" />
-    <xacro:urc_aruco_w_post id="1" pose="-68.70 -81.00 3.88 0 0 -2.77" />
-    <xacro:urc_aruco_w_post id="2" pose="-152.70 -96.80 11.94 0 0 2.81" />
-    <xacro:urc_aruco_w_post id="3" pose="-211.40 -182.70 17.66 0 0 0.52" />
-    <xacro:urc_aruco_w_post id="4" pose="-76.30 -214.60 -0.94 0 0 0.54" />
-    <xacro:urc_aruco_w_post id="5" pose="-257.30 -246.20 14.70 0 0 -1.75" />
-    <xacro:urc_aruco_w_post id="6" pose="-158.60 -294.80 13.33 0 0 -2.30" />
+    <model name="mdrs_terrain">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <pose>0 0 -13.67 0 0 0</pose>
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
+              <size>2000.00 2000.00 71.30</size>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
+              <size>2000.00 2000.00 71.30</size>
+              <pos>0 0 -13.67</pos>
+              <texture>
+                <diffuse>$(find coug_gazebo)/models/urc/mdrs_terrain/aerial.jpg</diffuse>
+                <normal>$(find coug_gazebo)/models/urc/mdrs_terrain/normal_map.png</normal>
+                <size>2000</size>
+              </texture>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://urc_aruco_0_w_post</uri>
+      <name>aruco_0</name>
+      <pose>-19.35 -28.73 -1.79 0 0 -1.63</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_1_w_post</uri>
+      <name>aruco_1</name>
+      <pose>-68.70 -81.00 3.88 0 0 -2.77</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_2_w_post</uri>
+      <name>aruco_2</name>
+      <pose>-152.70 -96.80 11.94 0 0 2.81</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_3_w_post</uri>
+      <name>aruco_3</name>
+      <pose>-211.40 -182.70 17.66 0 0 0.52</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_4_w_post</uri>
+      <name>aruco_4</name>
+      <pose>-76.30 -214.60 -0.94 0 0 0.54</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_5_w_post</uri>
+      <name>aruco_5</name>
+      <pose>-257.30 -246.20 14.70 0 0 -1.75</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_6_w_post</uri>
+      <name>aruco_6</name>
+      <pose>-158.60 -294.80 13.33 0 0 -2.30</pose>
+    </include>
 
     <xacro:include filename="mdrs_boulder_field.xacro" />
   </world>

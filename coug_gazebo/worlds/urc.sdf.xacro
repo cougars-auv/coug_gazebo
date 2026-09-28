@@ -18,17 +18,73 @@
 <sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="headless" default="true" />
 
-  <xacro:include filename="world_common.xacro" />
-
   <world name="default">
-    <xacro:world_systems headless="$(arg headless)" />
-    <xacro:world_origin latitude="38.418" longitude="-110.777" elevation="1394.024" />
-    <xacro:sun />
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <xacro:unless value="$(arg headless)">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
+      <use_units_gauss>false</use_units_gauss>
+      <use_earth_frame_ned>false</use_earth_frame_ned>
+    </plugin>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>38.418</latitude_deg>
+      <longitude_deg>-110.777</longitude_deg>
+      <elevation>1394.024</elevation>
+    </spherical_coordinates>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <specular>0 0 0 1</specular>
+      <direction>0 0.6 -0.6</direction>
+    </light>
     <scene>
       <sky />
     </scene>
-    <xacro:heightmap_physics />
 
-    <xacro:heightmap_terrain name="urc_terrain" dir="$(find coug_gazebo)/models/urc/urc_terrain" size="2000.00 2000.00 85.66" z="-48.85" />
+    <physics type="dart">
+      <max_step_size>0.003</max_step_size>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
+
+    <model name="urc_terrain">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <pose>0 0 -48.85 0 0 0</pose>
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/urc_terrain/height_map.png</uri>
+              <size>2000.00 2000.00 85.66</size>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/urc_terrain/height_map.png</uri>
+              <size>2000.00 2000.00 85.66</size>
+              <pos>0 0 -48.85</pos>
+              <texture>
+                <diffuse>$(find coug_gazebo)/models/urc/urc_terrain/aerial.jpg</diffuse>
+                <normal>$(find coug_gazebo)/models/urc/urc_terrain/normal_map.png</normal>
+                <size>2000</size>
+              </texture>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
   </world>
 </sdf>
