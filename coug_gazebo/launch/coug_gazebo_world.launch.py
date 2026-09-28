@@ -145,7 +145,7 @@ def generate_launch_description() -> LaunchDescription:
                     [
                         EnvironmentVariable("CONFIG_DIR"),
                         "gazebo",
-                        "rover_sonoma_raceway_params.yaml",
+                        "rover_mdrs_params.yaml",
                     ]
                 ),
             ),
