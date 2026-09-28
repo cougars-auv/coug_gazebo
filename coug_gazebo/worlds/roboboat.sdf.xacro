@@ -39,7 +39,7 @@
         <scene>scene</scene>
         <ambient_light>0.4 0.4 0.4</ambient_light>
         <background_color>0.8 0.8 0.8</background_color>
-        <camera_pose>-150 1030 25 0 0.35 2.4</camera_pose>
+        <camera_pose>-181.9 1147.8 28.1 0 0.25 -1.18</camera_pose>
         <camera_clip>
           <near>0.25</near>
           <far>10000</far>
