@@ -32,6 +32,7 @@ setup(
             "imu_covariance = coug_gazebo.imu_covariance_node:main",
             "mag_covariance = coug_gazebo.mag_covariance_node:main",
             "navsat_covariance = coug_gazebo.navsat_covariance_node:main",
+            "thrust_mixer = coug_gazebo.thrust_mixer_node:main",
         ],
     },
 )

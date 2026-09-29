@@ -4,6 +4,18 @@
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ
 
+- ros_topic_name: "thrusters/left/thrust"
+  gz_topic_name: "thrusters/left/thrust"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "gz.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "thrusters/right/thrust"
+  gz_topic_name: "thrusters/right/thrust"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "gz.msgs.Double"
+  direction: ROS_TO_GZ
+
 - ros_topic_name: "joint_states"
   gz_topic_name: "joint_states"
   ros_type_name: "sensor_msgs/msg/JointState"

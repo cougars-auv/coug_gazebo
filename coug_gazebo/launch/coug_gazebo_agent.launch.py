@@ -21,6 +21,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.conditions import IfCondition
 from launch.substitution import Substitution
 from launch.substitutions import (
     Command,
@@ -35,6 +36,10 @@ from ros_gz_bridge.actions import RosGzBridge
 
 def agent_frame(agent_ns: str | Substitution, frame: str) -> PythonExpression:
     return PythonExpression(["'", agent_ns, f"/{frame}' if '", agent_ns, f"' != '' else '{frame}'"])
+
+
+def is_agent(agent_ns: LaunchConfiguration, *names: str) -> PythonExpression:
+    return PythonExpression(["'", agent_ns, "' in ", str(names)])
 
 
 def load_launch_params(path: str, top_key: str) -> dict[str, Any]:
@@ -68,7 +73,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     agent_camera_bridge_config_file = os.path.join(
         coug_gazebo_dir, "config", "agent_camera_bridge.yaml"
     )
-    thruster_bridge_config_file = os.path.join(coug_gazebo_dir, "config", "thruster_bridge.yaml")
 
     fleet_param_file = PathJoinSubstitution(
         [EnvironmentVariable("CONFIG_DIR"), "fleet", "coug_gazebo_params.yaml"]
@@ -90,52 +94,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     urdf_filename = launch_params["urdf_file"]
     urdf_file = os.path.join(coug_gazebo_dir, "urdf", urdf_filename)
 
-    thrust_actions: list[Action] = []
-    if urdf_filename == "wamv.gazebo.xacro":
-        thrust_actions.append(
-            RosGzBridge(
-                bridge_name="thruster_bridge_node",
-                config_file=thruster_bridge_config_file,
-                container_name="/gazebo_container",
-                namespace=f"/{agent_ns_str}",
-                use_composition=True,
-                extra_bridge_params={
-                    "use_sim_time": use_sim_time,
-                    "expand_gz_topic_names": True,
-                },
-            )
-        )
-        for side, sign in (("left", "-"), ("right", "+")):
-            thrust_actions.append(
-                Node(
-                    package="topic_tools",
-                    executable="transform",
-                    name=f"{side}_thrust_mixer_node",
-                    arguments=[
-                        f"/{agent_ns_str}/cmd_vel_out",
-                        f"/{agent_ns_str}/thrusters/{side}/thrust",
-                        "std_msgs/msg/Float64",
-                        (
-                            "(s := (100.0 * m.linear.x + 150.0 * m.linear.x * abs(m.linear.x))"
-                            " / 2.0, "
-                            "y := (800.0 * m.angular.z + 800.0 * m.angular.z * abs(m.angular.z))"
-                            " / 2.05427, "
-                            f"std_msgs.msg.Float64(data=(s {sign} y)"
-                            " / max(1.0, (abs(s) + abs(y)) / 2353.5)))[-1]"
-                        ),
-                        "--field",
-                        "twist",
-                        "--import",
-                        "std_msgs",
-                        "--wait-for-start",
-                        "--qos-reliability",
-                        "reliable",
-                    ],
-                )
-            )
-
     return [
-        *thrust_actions,
         Node(
             package="ros_gz_sim",
             executable="create",
@@ -214,6 +173,18 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="navsat_covariance",
             name="navsat_covariance_node",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="coug_gazebo",
+            executable="thrust_mixer",
+            name="thrust_mixer_node",
+            condition=IfCondition(is_agent(agent_ns, "wamv1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,
