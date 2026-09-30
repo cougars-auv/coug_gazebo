@@ -211,6 +211,36 @@
     <uri>model://roboboat_dock_n</uri>
   </include>
   <include>
+    <name>t5_banner_s_1</name>
+    <pose relative_to="roboboat_course">-1.994 -17.778 0.635 0 0 -1.571</pose>
+    <uri>model://roboboat_banner_1</uri>
+  </include>
+  <include>
+    <name>t5_banner_s_2</name>
+    <pose relative_to="roboboat_course">-1.994 -15.746 0.635 0 0 -1.571</pose>
+    <uri>model://roboboat_banner_2</uri>
+  </include>
+  <include>
+    <name>t5_banner_s_3</name>
+    <pose relative_to="roboboat_course">-1.993 -13.714 0.635 0 0 -1.571</pose>
+    <uri>model://roboboat_banner_3</uri>
+  </include>
+  <include>
+    <name>t5_banner_n_1</name>
+    <pose relative_to="roboboat_course">7.085 -13.714 0.635 0 0 1.571</pose>
+    <uri>model://roboboat_banner_1</uri>
+  </include>
+  <include>
+    <name>t5_banner_n_2</name>
+    <pose relative_to="roboboat_course">7.086 -15.746 0.635 0 0 1.571</pose>
+    <uri>model://roboboat_banner_2</uri>
+  </include>
+  <include>
+    <name>t5_banner_n_3</name>
+    <pose relative_to="roboboat_course">7.086 -17.778 0.635 0 0 1.571</pose>
+    <uri>model://roboboat_banner_3</uri>
+  </include>
+  <include>
     <name>t5_indicator_red_1</name>
     <pose relative_to="roboboat_course">-1.74 -13.714 0.33 0 0 0</pose>
     <uri>model://roboboat_color_indicator_red</uri>
