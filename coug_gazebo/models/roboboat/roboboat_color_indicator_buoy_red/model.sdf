@@ -565,5 +565,8 @@
         <topic>/vrx/wavefield/parameters</topic>
       </wavefield>
     </plugin>
+    <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+      <label>42</label>
+    </plugin>
   </model>
 </sdf>

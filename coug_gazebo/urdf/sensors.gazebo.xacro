@@ -87,6 +87,7 @@
 
       <sensor name="magnetometer" type="magnetometer">
         <always_on>true</always_on>
+        <!-- https://www.stereolabs.com/docs/sensors/magnetometer -->
         <update_rate>50</update_rate>
         <topic>/${agent_ns}/camera/imu/mag</topic>
         <gz_frame_id>${link}</gz_frame_id>
@@ -185,6 +186,32 @@
               <far>15.0</far>
             </clip>
           </depth_camera>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="boundingbox_camera_sensor" params="link">
+    <gazebo reference="${link}">
+      <sensor name="boundingbox_camera" type="boundingbox_camera">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <topic>/${agent_ns}/camera/boxes</topic>
+        <gz_frame_id>${link}</gz_frame_id>
+        <camera>
+          <box_type>visible_2d</box_type>
+          <!-- https://www.stereolabs.com/en-us/products/zed-2i -->
+          <horizontal_fov>${radians(110)}</horizontal_fov>
+          <!-- https://github.com/stereolabs/zed-ros2-wrapper/blob/v5.5.0/zed_wrapper/config/zed2i.yaml
+            https://github.com/stereolabs/zed-ros2-wrapper/blob/v5.5.0/zed_wrapper/config/common_stereo.yaml -->
+          <image>
+            <width>1280</width>
+            <height>720</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100.0</far>
+          </clip>
         </camera>
       </sensor>
     </gazebo>

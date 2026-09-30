@@ -43,5 +43,6 @@
   <xacro:imu_sensors link="${tf_prefix}imu_link" />
   <xacro:gps_sensor link="${tf_prefix}gps_link" />
   <xacro:depth_camera_sensor link="${tf_prefix}depth_camera_link" />
+  <xacro:boundingbox_camera_sensor link="${tf_prefix}depth_camera_link" />
 
 </robot>

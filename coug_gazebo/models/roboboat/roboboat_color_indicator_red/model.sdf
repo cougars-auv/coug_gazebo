@@ -65,5 +65,8 @@
         </material>
       </visual>
     </link>
+    <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+      <label>40</label>
+    </plugin>
   </model>
 </sdf>

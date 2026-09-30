@@ -19,14 +19,14 @@ from rclpy.qos import qos_profile_system_default
 from std_msgs.msg import Float64
 
 # wamv_gazebo_dynamics_plugin.xacro
-WAMV_LINEAR_DRAG = 100.0  # xU
-WAMV_LINEAR_QUAD_DRAG = 150.0  # xUU
-WAMV_ANGULAR_DRAG = 800.0  # nR
-WAMV_ANGULAR_QUAD_DRAG = 800.0  # nRR
+_WAMV_LINEAR_DRAG = 100.0  # xU
+_WAMV_LINEAR_QUAD_DRAG = 150.0  # xUU
+_WAMV_ANGULAR_DRAG = 800.0  # nR
+_WAMV_ANGULAR_QUAD_DRAG = 800.0  # nRR
 
 # wamv_gazebo_thruster_config.xacro/wamv_aft_thrusters.xacro
-WAMV_MAX_THRUST = 2353.5  # max_thrust_cmd
-WAMV_THRUSTER_Y = 1.027135  # engine position y (m)
+_WAMV_MAX_THRUST = 2353.5  # max_thrust_cmd
+_WAMV_THRUSTER_Y = 1.027135  # engine position y (m)
 
 
 class ThrustMixerNode(Node):
@@ -58,18 +58,18 @@ class ThrustMixerNode(Node):
 
     def _twist_callback(self, msg: TwistStamped) -> None:
         fwd = msg.twist.linear.x * (
-            WAMV_LINEAR_DRAG + WAMV_LINEAR_QUAD_DRAG * abs(msg.twist.linear.x)
+            _WAMV_LINEAR_DRAG + _WAMV_LINEAR_QUAD_DRAG * abs(msg.twist.linear.x)
         )
         yaw = msg.twist.angular.z * (
-            WAMV_ANGULAR_DRAG + WAMV_ANGULAR_QUAD_DRAG * abs(msg.twist.angular.z)
+            _WAMV_ANGULAR_DRAG + _WAMV_ANGULAR_QUAD_DRAG * abs(msg.twist.angular.z)
         )
 
-        cmd_left = fwd / 2.0 - yaw / (2.0 * WAMV_THRUSTER_Y)
-        cmd_right = fwd / 2.0 + yaw / (2.0 * WAMV_THRUSTER_Y)
+        cmd_left = fwd / 2.0 - yaw / (2.0 * _WAMV_THRUSTER_Y)
+        cmd_right = fwd / 2.0 + yaw / (2.0 * _WAMV_THRUSTER_Y)
 
         max_req = max(abs(cmd_left), abs(cmd_right))
-        if max_req > WAMV_MAX_THRUST:
-            scale_factor = WAMV_MAX_THRUST / max_req
+        if max_req > _WAMV_MAX_THRUST:
+            scale_factor = _WAMV_MAX_THRUST / max_req
             cmd_left *= scale_factor
             cmd_right *= scale_factor
 
