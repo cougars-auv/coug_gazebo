@@ -93,37 +93,37 @@
     <include>
       <uri>model://urc_aruco_0_w_post</uri>
       <name>aruco_0</name>
-      <pose>-19.35 -28.73 -1.82 0 0 -1.63</pose>
+      <pose>5.00 33.00 -0.707 0 0 -1.57</pose>
     </include>
     <include>
       <uri>model://urc_aruco_1_w_post</uri>
       <name>aruco_1</name>
-      <pose>-68.70 -81.00 3.84 0 0 -2.77</pose>
+      <pose>90.38 25.88 -2.133 0 0 -2.44</pose>
     </include>
     <include>
       <uri>model://urc_aruco_2_w_post</uri>
       <name>aruco_2</name>
-      <pose>-152.70 -96.80 11.91 0 0 2.81</pose>
+      <pose>64.88 42.12 -1.752 0 0 0.77</pose>
     </include>
     <include>
       <uri>model://urc_aruco_3_w_post</uri>
       <name>aruco_3</name>
-      <pose>-211.40 -182.70 17.62 0 0 0.52</pose>
+      <pose>86.88 11.88 -2.818 0 0 0.04</pose>
     </include>
     <include>
       <uri>model://urc_aruco_4_w_post</uri>
       <name>aruco_4</name>
-      <pose>-76.30 -214.60 -0.98 0 0 0.54</pose>
+      <pose>51.38 29.62 -1.041 0 0 -1.53</pose>
     </include>
     <include>
       <uri>model://urc_aruco_5_w_post</uri>
       <name>aruco_5</name>
-      <pose>-257.30 -246.20 14.63 0 0 -1.75</pose>
+      <pose>107.62 41.88 -2.527 0 0 -1.48</pose>
     </include>
     <include>
       <uri>model://urc_aruco_6_w_post</uri>
       <name>aruco_6</name>
-      <pose>-158.60 -294.80 13.34 0 0 -2.30</pose>
+      <pose>77.62 23.62 -2.708 0 0 2.51</pose>
     </include>
 
     <xacro:include filename="mdrs_boulder_field.xacro" />

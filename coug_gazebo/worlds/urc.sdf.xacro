@@ -89,5 +89,41 @@
         </visual>
       </link>
     </model>
+
+    <include>
+      <uri>model://urc_aruco_0_w_post</uri>
+      <name>aruco_0</name>
+      <pose>75.00 -222.00 0.91 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_1_w_post</uri>
+      <name>aruco_1</name>
+      <pose>160.94 -314.51 2.941 0 0 2.39</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_2_w_post</uri>
+      <name>aruco_2</name>
+      <pose>269.89 -397.04 1.551 0 0 -0.37</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_3_w_post</uri>
+      <name>aruco_3</name>
+      <pose>295.68 -341.82 4.458 0 0 -2.96</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_4_w_post</uri>
+      <name>aruco_4</name>
+      <pose>252.84 -300.46 0.423 0 0 2.49</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_5_w_post</uri>
+      <name>aruco_5</name>
+      <pose>272.10 -248.42 -0.838 0 0 -2.33</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_6_w_post</uri>
+      <name>aruco_6</name>
+      <pose>335.71 -274.01 -8.090 0 0 0.89</pose>
+    </include>
   </world>
 </sdf>
