@@ -34,12 +34,15 @@
       <use_earth_frame_ned>false</use_earth_frame_ned>
     </plugin>
 
+    <!-- Terrain: USGS 3DEP OPR 0.5 m DEM, NAD83(2011) / NAVD88 + GEOID18, shifted to ITRF2020 (~WGS 84)
+      ellipsoidal heights at epoch 2027.416 (2027-06-02, the WMM date). Aerial registered to the lidar.
+      NAD83-fixed ground drifts ~17.8 mm/yr from WGS 84 here (-15.3 mm/yr E, -9.1 mm/yr N). -->
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <world_frame_orientation>ENU</world_frame_orientation>
       <latitude_deg>38.406</latitude_deg>
       <longitude_deg>-110.792</longitude_deg>
-      <elevation>1373.153</elevation>
+      <elevation>1352.274</elevation>
     </spherical_coordinates>
 
     <light type="directional" name="sun">
@@ -62,11 +65,11 @@
       <static>true</static>
       <link name="ground">
         <collision name="collision">
-          <pose>0 0 -13.67 0 0 0</pose>
+          <pose>0 0 -13.8278 0 0 0</pose>
           <geometry>
             <heightmap>
               <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
-              <size>2000.00 2000.00 71.30</size>
+              <size>2000.48828125 2000.48828125 71.5112</size>
             </heightmap>
           </geometry>
         </collision>
@@ -74,8 +77,8 @@
           <geometry>
             <heightmap>
               <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
-              <size>2000.00 2000.00 71.30</size>
-              <pos>0 0 -13.67</pos>
+              <size>2000.00 2000.00 71.5112</size>
+              <pos>0 0 -13.8278</pos>
               <texture>
                 <diffuse>$(find coug_gazebo)/models/urc/mdrs_terrain/aerial.jpg</diffuse>
                 <normal>$(find coug_gazebo)/models/urc/mdrs_terrain/normal_map.png</normal>
@@ -90,37 +93,37 @@
     <include>
       <uri>model://urc_aruco_0_w_post</uri>
       <name>aruco_0</name>
-      <pose>-19.35 -28.73 -1.79 0 0 -1.63</pose>
+      <pose>-19.35 -28.73 -1.82 0 0 -1.63</pose>
     </include>
     <include>
       <uri>model://urc_aruco_1_w_post</uri>
       <name>aruco_1</name>
-      <pose>-68.70 -81.00 3.88 0 0 -2.77</pose>
+      <pose>-68.70 -81.00 3.84 0 0 -2.77</pose>
     </include>
     <include>
       <uri>model://urc_aruco_2_w_post</uri>
       <name>aruco_2</name>
-      <pose>-152.70 -96.80 11.94 0 0 2.81</pose>
+      <pose>-152.70 -96.80 11.91 0 0 2.81</pose>
     </include>
     <include>
       <uri>model://urc_aruco_3_w_post</uri>
       <name>aruco_3</name>
-      <pose>-211.40 -182.70 17.66 0 0 0.52</pose>
+      <pose>-211.40 -182.70 17.62 0 0 0.52</pose>
     </include>
     <include>
       <uri>model://urc_aruco_4_w_post</uri>
       <name>aruco_4</name>
-      <pose>-76.30 -214.60 -0.94 0 0 0.54</pose>
+      <pose>-76.30 -214.60 -0.98 0 0 0.54</pose>
     </include>
     <include>
       <uri>model://urc_aruco_5_w_post</uri>
       <name>aruco_5</name>
-      <pose>-257.30 -246.20 14.70 0 0 -1.75</pose>
+      <pose>-257.30 -246.20 14.63 0 0 -1.75</pose>
     </include>
     <include>
       <uri>model://urc_aruco_6_w_post</uri>
       <name>aruco_6</name>
-      <pose>-158.60 -294.80 13.33 0 0 -2.30</pose>
+      <pose>-158.60 -294.80 13.34 0 0 -2.30</pose>
     </include>
 
     <xacro:include filename="mdrs_boulder_field.xacro" />

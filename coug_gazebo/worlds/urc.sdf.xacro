@@ -34,12 +34,15 @@
       <use_earth_frame_ned>false</use_earth_frame_ned>
     </plugin>
 
+    <!-- Terrain: USGS 3DEP OPR 0.5 m DEM, NAD83(2011) / NAVD88 + GEOID18, shifted to ITRF2020 (~WGS 84)
+      ellipsoidal heights at epoch 2027.416 (2027-06-02, the WMM date). Aerial registered to the lidar.
+      NAD83-fixed ground drifts ~17.8 mm/yr from WGS 84 here (-15.3 mm/yr E, -9.1 mm/yr N). -->
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <world_frame_orientation>ENU</world_frame_orientation>
       <latitude_deg>38.418</latitude_deg>
       <longitude_deg>-110.777</longitude_deg>
-      <elevation>1394.024</elevation>
+      <elevation>1373.163</elevation>
     </spherical_coordinates>
 
     <light type="directional" name="sun">
@@ -62,11 +65,11 @@
       <static>true</static>
       <link name="ground">
         <collision name="collision">
-          <pose>0 0 -48.85 0 0 0</pose>
+          <pose>0 0 -49.0997 0 0 0</pose>
           <geometry>
             <heightmap>
               <uri>$(find coug_gazebo)/models/urc/urc_terrain/height_map.png</uri>
-              <size>2000.00 2000.00 85.66</size>
+              <size>2000.48828125 2000.48828125 85.8635</size>
             </heightmap>
           </geometry>
         </collision>
@@ -74,8 +77,8 @@
           <geometry>
             <heightmap>
               <uri>$(find coug_gazebo)/models/urc/urc_terrain/height_map.png</uri>
-              <size>2000.00 2000.00 85.66</size>
-              <pos>0 0 -48.85</pos>
+              <size>2000.00 2000.00 85.8635</size>
+              <pos>0 0 -49.0997</pos>
               <texture>
                 <diffuse>$(find coug_gazebo)/models/urc/urc_terrain/aerial.jpg</diffuse>
                 <normal>$(find coug_gazebo)/models/urc/urc_terrain/normal_map.png</normal>
