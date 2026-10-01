@@ -84,8 +84,8 @@
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <world_frame_orientation>ENU</world_frame_orientation>
-      <latitude_deg>27.367256</latitude_deg>
-      <longitude_deg>-82.451120</longitude_deg>
+      <latitude_deg>27.366056</latitude_deg>
+      <longitude_deg>-82.450928</longitude_deg>
       <elevation>0.0</elevation>
       <heading_deg>0.0</heading_deg>
     </spherical_coordinates>
