@@ -120,8 +120,8 @@
       filename="libUSVWind.so"
       name="vrx::USVWind">
       <wind_obj>
-        <name>blueboat1gz</name>
-        <link_name>blueboat1gz/base_link</link_name>
+        <name>yboat1gz</name>
+        <link_name>yboat1gz/base_link</link_name>
         <coeff_vector>.05 .05 .03</coeff_vector>
       </wind_obj>
       <!-- Wind -->

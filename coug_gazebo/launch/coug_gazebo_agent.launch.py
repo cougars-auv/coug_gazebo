@@ -109,7 +109,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     if world_origin is None:
         raise RuntimeError(f"No 'spherical_coordinates' set in '{world_file}'.")
 
-    ardupilot_condition = IfCondition(is_agent(agent_ns, "blueboat1gz"))
+    ardupilot_condition = IfCondition(is_agent(agent_ns, "yboat1gz"))
     ardupilot_home = ",".join(
         [
             world_origin.findtext("latitude_deg", "0").strip(),
