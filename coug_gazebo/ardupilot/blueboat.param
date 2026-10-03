@@ -43,9 +43,11 @@ FS_EKF_ACTION 0
 
 # FROST Lab additions
 
+# Simulation quick-start
 ARMING_REQUIRE 0
 SCR_ENABLE 1
 
+# Faster EKF and sensor rates
 MAV1_EXTRA1 50
 MAV1_EXT_STAT 5
 MAV1_POSITION 50
