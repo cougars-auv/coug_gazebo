@@ -159,7 +159,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="navsat_covariance",
             name="navsat_covariance_node",
-            condition=UnlessCondition(is_agent(agent_ns, "yboat1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,
