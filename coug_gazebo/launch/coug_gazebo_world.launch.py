@@ -87,7 +87,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", model_root, prepend=True)
         for model_root in model_roots
     ]
-    for mesh_package in ("wamv_description", "coug_description"):
+    for mesh_package in ("ardupilot_sitl_models", "wamv_description"):
         with contextlib.suppress(PackageNotFoundError):
             resource_actions.append(
                 AppendEnvironmentVariable(
