@@ -49,8 +49,9 @@ def load_launch_params(path: str, top_key: str) -> dict[str, Any]:
 
 
 def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Action]:
-    scenario_param_file = LaunchConfiguration("scenario_param_file")
     headless = LaunchConfiguration("headless")
+
+    scenario_param_path = LaunchConfiguration("scenario_param_file").perform(context)
 
     config_dir = os.environ["CONFIG_DIR"]
     coug_gazebo_dir = get_package_share_directory("coug_gazebo")
@@ -59,11 +60,13 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
 
     clock_bridge_config_file = os.path.join(coug_gazebo_dir, "config", "clock_bridge.yaml")
 
-    fleet_launch_params = load_launch_params(
-        os.path.join(config_dir, "fleet", "coug_gazebo_params.yaml"), "/**"
-    )
-    scenario_launch_params = load_launch_params(scenario_param_file.perform(context), "/**")
-    world_filename = scenario_launch_params.get("world_file", fleet_launch_params.get("world_file"))
+    fleet_param_path = os.path.join(config_dir, "fleet", "coug_gazebo_params.yaml")
+
+    launch_params = {
+        **load_launch_params(fleet_param_path, "/**"),
+        **load_launch_params(scenario_param_path, "/**"),
+    }
+    world_filename = launch_params["world_file"]
     world_file = os.path.join(coug_gazebo_dir, "worlds", world_filename)
     world_sdf_fd, world_sdf_file = tempfile.mkstemp(prefix="coug_gazebo_", suffix=".sdf")
     os.close(world_sdf_fd)
@@ -84,14 +87,15 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", model_root, prepend=True)
         for model_root in model_roots
     ]
-    with contextlib.suppress(PackageNotFoundError):
-        resource_actions.append(
-            AppendEnvironmentVariable(
-                "GZ_SIM_RESOURCE_PATH",
-                os.path.dirname(get_package_share_directory("wamv_description")),
-                prepend=True,
+    for mesh_package in ("wamv_description", "coug_description"):
+        with contextlib.suppress(PackageNotFoundError):
+            resource_actions.append(
+                AppendEnvironmentVariable(
+                    "GZ_SIM_RESOURCE_PATH",
+                    os.path.dirname(get_package_share_directory(mesh_package)),
+                    prepend=True,
+                )
             )
-        )
 
     return [
         *resource_actions,

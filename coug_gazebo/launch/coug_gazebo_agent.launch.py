@@ -14,14 +14,17 @@
 
 import json
 import os
+import shutil
 from typing import Any
+from xml.etree import ElementTree
 
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction
 from launch.conditions import IfCondition
+from launch.logging import launch_config
 from launch.substitution import Substitution
 from launch.substitutions import (
     Command,
@@ -42,11 +45,13 @@ def is_agent(agent_ns: LaunchConfiguration, *names: str) -> PythonExpression:
     return PythonExpression(["'", agent_ns, "' in ", str(names)])
 
 
-def load_launch_params(path: str, top_key: str) -> dict[str, Any]:
+def load_launch_params(
+    path: str, top_key: str, launch_key: str = "coug_gazebo_agent_launch"
+) -> dict[str, Any]:
     try:
         with open(path) as config_file:
             config = yaml.safe_load(config_file)
-        params = config[top_key]["coug_gazebo_agent_launch"]["ros__parameters"]
+        params = config[top_key][launch_key]["ros__parameters"]
         return dict(params)
     except (KeyError, TypeError, OSError):
         return {}
@@ -56,9 +61,9 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     use_sim_time = LaunchConfiguration("use_sim_time")
     agent_ns = LaunchConfiguration("agent_ns")
 
+    agent_ns_str = agent_ns.perform(context)
     initial_position_str = LaunchConfiguration("initial_position").perform(context)
     initial_orientation_str = LaunchConfiguration("initial_orientation").perform(context)
-    agent_ns_str = agent_ns.perform(context)
     scenario_param_path = LaunchConfiguration("scenario_param_file").perform(context)
 
     position = json.loads(initial_position_str) if initial_position_str else [0.0, 0.0, 0.0]
@@ -93,6 +98,37 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     }
     urdf_filename = launch_params["urdf_file"]
     urdf_file = os.path.join(coug_gazebo_dir, "urdf", urdf_filename)
+
+    world_launch_params = {
+        **load_launch_params(fleet_param_path, "/**", "coug_gazebo_world_launch"),
+        **load_launch_params(scenario_param_path, "/**", "coug_gazebo_world_launch"),
+    }
+    world_filename = world_launch_params["world_file"]
+    world_file = os.path.join(coug_gazebo_dir, "worlds", world_filename)
+    world_origin = ElementTree.parse(world_file).find("world/spherical_coordinates")
+    if world_origin is None:
+        raise RuntimeError(f"No 'spherical_coordinates' set in '{world_file}'.")
+
+    ardupilot_condition = IfCondition(is_agent(agent_ns, "blueboat1gz"))
+    ardupilot_home = ",".join(
+        [
+            world_origin.findtext("latitude_deg", "0").strip(),
+            world_origin.findtext("longitude_deg", "0").strip(),
+            world_origin.findtext("elevation", "0").strip(),
+            "0",
+        ]
+    )
+    ardupilot_instance = str(launch_params["ardupilot_instance"])
+    ardupilot_param_filename = launch_params["ardupilot_param_file"]
+    ardupilot_param_file = os.path.join(coug_gazebo_dir, "ardupilot", ardupilot_param_filename)
+
+    ardupilot_dir = os.path.join(launch_config.log_dir, "ardupilot", agent_ns_str)
+    if ardupilot_condition.evaluate(context):
+        shutil.copytree(
+            os.path.join(coug_gazebo_dir, "lua"),
+            os.path.join(ardupilot_dir, "scripts"),
+            dirs_exist_ok=True,
+        )
 
     return [
         Node(
@@ -171,7 +207,16 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 "-name",
                 agent_ns_str,
                 "-string",
-                Command(["xacro ", urdf_file, " agent_ns:=", agent_ns_str]),
+                Command(
+                    [
+                        "xacro ",
+                        urdf_file,
+                        " agent_ns:=",
+                        agent_ns_str,
+                        " ardupilot_instance:=",
+                        ardupilot_instance,
+                    ]
+                ),
                 "-x",
                 str(position[0]),
                 "-y",
@@ -192,6 +237,22 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 {"use_sim_time": use_sim_time},
             ],
         ),
+        ExecuteProcess(
+            cmd=[
+                "ardurover",
+                "--wipe",
+                "--model",
+                "JSON",
+                "-I",
+                ardupilot_instance,
+                "--home",
+                ardupilot_home,
+                "--defaults",
+                ardupilot_param_file,
+            ],
+            cwd=ardupilot_dir,
+            condition=ardupilot_condition,
+        ),
     ]
 
 
@@ -204,7 +265,7 @@ def generate_launch_description() -> LaunchDescription:
             ),
             DeclareLaunchArgument(
                 "agent_ns",
-                default_value="rover1gz",
+                default_value="auv0",
             ),
             DeclareLaunchArgument(
                 "scenario_param_file",
