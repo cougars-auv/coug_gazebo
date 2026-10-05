@@ -130,8 +130,6 @@
     </plugin>
 
     <xacro:truth_odometry base_frame="${tf_prefix}base_link" />
-
-    <xacro:camera_odometry camera_frame="${tf_prefix}depth_camera_link" xyz="${blueboat_depth_camera_xyz}" rpy="${blueboat_depth_camera_rpy}" />
   </gazebo>
 
   <!-- Gazebo sensors -->
