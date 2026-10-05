@@ -23,7 +23,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.logging import launch_config
 from launch.substitution import Substitution
 from launch.substitutions import (
@@ -135,7 +135,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="imu_covariance",
             name="imu_covariance_node",
-            condition=UnlessCondition(is_agent(agent_ns, "yboat1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,
@@ -147,7 +146,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="mag_covariance",
             name="mag_covariance_node",
-            condition=UnlessCondition(is_agent(agent_ns, "yboat1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,
