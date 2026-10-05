@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2026 BYU FROST Lab
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<robot name="blueboat_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="agent_ns" default="yboat1gz" />
+  <xacro:property name="agent_ns" value="$(arg agent_ns)" />
+
+  <xacro:arg name="tf_prefix" default="$(arg agent_ns)/" />
+
+  <xacro:arg name="ardupilot_instance" default="0" />
+  <xacro:property name="ardupilot_instance" value="$(arg ardupilot_instance)" />
+
+  <xacro:include filename="$(find coug_description)/urdf/blueboat.urdf.xacro" />
+  <xacro:include filename="$(find coug_gazebo)/urdf/sensors.gazebo.xacro" />
+
+  <xacro:property name="hull_length" value="${base_length}" />
+  <!-- https://github.com/yoyoyoyng/blueboat-vrx/blob/main/src/vrx/vrx_urdf/wamv_gazebo/urdf/dynamics/wamv_gazebo_dynamics_plugin.xacro -->
+  <xacro:property name="hull_radius" value="0.13" />
+  <xacro:property name="hull_yoff" value="${thruster_yoff}" />
+  <!-- https://bluerobotics.com/store/boat/blueboat/blueboat/ -->
+  <xacro:property name="freeboard" value="0.16" />
+  <xacro:property name="buoyancy_depth" value="0.0493" />
+  <xacro:property name="buoyancy_xoff" value="${hull_length/3}" />
+  <xacro:property name="buoyancy_zoff" value="${buoyancy_depth - (blueboat_mesh_zoff - freeboard)}" />
+
+  <!-- https://github.com/bluerobotics/Blueos-Parameter-Repository/blob/master/params/ardupilot/ArduRover/4.7/Navigator/BlueBoat120.params -->
+  <xacro:property name="servo_min" value="1100" />
+  <xacro:property name="servo_max" value="1900" />
+  <xacro:property name="servo_trim" value="1510" />
+
+  <!-- https://bluerobotics.com/store/boat/blueboat/blueboat/ -->
+  <xacro:property name="thruster_max_thrust" value="${8.2 * 9.80665 / 2}" />
+
+  <!-- https://github.com/cougars-auv/vrx/blob/jazzy/vrx_gz/src/Surface.cc -->
+  <xacro:macro name="hull_surface" params="y_reflect">
+    <plugin filename="libSurface.so" name="vrx::Surface">
+      <link_name>${tf_prefix}base_link</link_name>
+      <hull_length>${hull_length}</hull_length>
+      <hull_radius>${hull_radius}</hull_radius>
+      <points>
+        <point>${buoyancy_xoff} ${y_reflect*hull_yoff} ${-buoyancy_zoff}</point>
+        <point>0 ${y_reflect*hull_yoff} ${-buoyancy_zoff}</point>
+        <point>${-buoyancy_xoff} ${y_reflect*hull_yoff} ${-buoyancy_zoff}</point>
+      </points>
+      <wavefield>
+        <topic>/vrx/wavefield/parameters</topic>
+      </wavefield>
+    </plugin>
+  </xacro:macro>
+
+  <xacro:macro name="thruster_plugin" params="prefix">
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>${prefix}_thruster_joint</joint_name>
+      <namespace>${agent_ns}</namespace>
+      <topic>thrusters/${prefix}/thrust</topic>
+      <!-- https://github.com/ArduPilot/SITL_Models/blob/master/Gazebo/models/blueboat/model.sdf -->
+      <thrust_coefficient>0.02</thrust_coefficient>
+      <propeller_diameter>${2*thruster_radius}</propeller_diameter>
+      <velocity_control>true</velocity_control>
+    </plugin>
+  </xacro:macro>
+
+  <xacro:macro name="ardupilot_channel" params="channel prefix direction">
+    <control channel="${channel}">
+      <jointName>${prefix}_thruster_joint</jointName>
+      <multiplier>${direction * thruster_max_thrust * (servo_max - servo_min)/(servo_max - servo_trim)}</multiplier>
+      <offset>${-(servo_trim - servo_min)/(servo_max - servo_min)}</offset>
+      <servo_min>${servo_min}</servo_min>
+      <servo_max>${servo_max}</servo_max>
+      <type>COMMAND</type>
+      <cmd_topic>/${agent_ns}/thrusters/${prefix}/thrust</cmd_topic>
+    </control>
+  </xacro:macro>
+
+  <!-- Gazebo plugins -->
+  <gazebo>
+    <xacro:hull_surface y_reflect="1" />
+    <xacro:hull_surface y_reflect="-1" />
+
+    <!-- https://github.com/yoyoyoyng/blueboat-vrx/blob/main/src/vrx/vrx_urdf/wamv_gazebo/urdf/dynamics/wamv_gazebo_dynamics_plugin.xacro -->
+    <plugin filename="libSimpleHydrodynamics.so" name="vrx::SimpleHydrodynamics">
+      <link_name>${tf_prefix}base_link</link_name>
+      <xDotU>0.0</xDotU>
+      <yDotV>0.0</yDotV>
+      <nDotR>0.0</nDotR>
+      <!-- https://bluerobotics.com/store/boat/blueboat/blueboat/ -->
+      <xU>8.0</xU>
+      <xUU>6.27</xUU>
+      <yV>30.0</yV>
+      <yVV>42.0</yVV>
+      <zW>120.0</zW>
+      <kP>24.0</kP>
+      <kPP>38.0</kPP>
+      <mQ>34.0</mQ>
+      <mQQ>52.0</mQQ>
+      <nR>10.0</nR>
+      <nRR>22.0</nRR>
+    </plugin>
+
+    <xacro:thruster_plugin prefix="left" />
+    <xacro:thruster_plugin prefix="right" />
+
+    <!-- https://github.com/ArduPilot/SITL_Models/blob/master/Gazebo/models/blueboat/model.sdf -->
+    <plugin filename="ArduPilotPlugin" name="ArduPilotPlugin">
+      <fdm_port_in>${9002 + 10 * ardupilot_instance}</fdm_port_in>
+      <lock_step>1</lock_step>
+      <gazeboXYZToNED degrees="true">0 0 0 180 0 90</gazeboXYZToNED>
+      <imuName>ardupilot_imu</imuName>
+      <xacro:ardupilot_channel channel="0" prefix="right" direction="1" />
+      <xacro:ardupilot_channel channel="2" prefix="left" direction="-1" />
+    </plugin>
+
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>/${agent_ns}/joint_states</topic>
+    </plugin>
+
+    <xacro:truth_odometry base_frame="${tf_prefix}base_link" />
+
+    <xacro:camera_odometry camera_frame="${tf_prefix}depth_camera_link" xyz="${blueboat_depth_camera_xyz}" rpy="${blueboat_depth_camera_rpy}" />
+  </gazebo>
+
+  <!-- Gazebo sensors -->
+  <gazebo reference="${tf_prefix}base_link">
+    <sensor name="ardupilot_imu" type="imu">
+      <pose>0 0 0 ${pi} 0 0</pose>
+      <always_on>true</always_on>
+    </sensor>
+  </gazebo>
+  <xacro:gps_sensor link="${tf_prefix}gps_link" />
+  <xacro:depth_camera_sensor link="${tf_prefix}depth_camera_link" />
+  <xacro:boundingbox_camera_sensor link="${tf_prefix}depth_camera_link" />
+
+</robot>
