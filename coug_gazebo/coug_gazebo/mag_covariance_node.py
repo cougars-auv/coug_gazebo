@@ -41,12 +41,15 @@ class MagCovarianceNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _mag_callback(self, msg: MagneticField) -> None:
+        self._output_pub.publish(self._convert_to_mag(msg))
+
+    def _convert_to_mag(self, msg: MagneticField) -> MagneticField:
         if not any(msg.magnetic_field_covariance):
             msg.magnetic_field_covariance[0] = self._magnetic_field_noise_sigmas[0] ** 2
             msg.magnetic_field_covariance[4] = self._magnetic_field_noise_sigmas[1] ** 2
             msg.magnetic_field_covariance[8] = self._magnetic_field_noise_sigmas[2] ** 2
 
-        self._output_pub.publish(msg)
+        return msg
 
 
 def main(args: list[str] | None = None) -> None:

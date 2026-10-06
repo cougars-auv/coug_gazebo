@@ -39,11 +39,14 @@ class ImuCovarianceNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _imu_callback(self, msg: Imu) -> None:
+        self._output_pub.publish(self._convert_to_imu(msg))
+
+    def _convert_to_imu(self, msg: Imu) -> Imu:
         msg.orientation_covariance[0] = self._orientation_noise_sigmas[0] ** 2
         msg.orientation_covariance[4] = self._orientation_noise_sigmas[1] ** 2
         msg.orientation_covariance[8] = self._orientation_noise_sigmas[2] ** 2
 
-        self._output_pub.publish(msg)
+        return msg
 
 
 def main(args: list[str] | None = None) -> None:

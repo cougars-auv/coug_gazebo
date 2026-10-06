@@ -41,13 +41,16 @@ class NavsatCovarianceNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _navsat_callback(self, msg: NavSatFix) -> None:
+        self._output_pub.publish(self._convert_to_navsat(msg))
+
+    def _convert_to_navsat(self, msg: NavSatFix) -> NavSatFix:
         if msg.position_covariance_type == NavSatFix.COVARIANCE_TYPE_UNKNOWN:
             msg.position_covariance[0] = self._position_noise_sigmas[0] ** 2
             msg.position_covariance[4] = self._position_noise_sigmas[1] ** 2
             msg.position_covariance[8] = self._position_noise_sigmas[2] ** 2
             msg.position_covariance_type = NavSatFix.COVARIANCE_TYPE_DIAGONAL_KNOWN
 
-        self._output_pub.publish(msg)
+        return msg
 
 
 def main(args: list[str] | None = None) -> None:

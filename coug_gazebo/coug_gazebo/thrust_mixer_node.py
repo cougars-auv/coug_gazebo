@@ -57,6 +57,11 @@ class ThrustMixerNode(Node):
         self.get_logger().info("Initialization complete.")
 
     def _twist_callback(self, msg: TwistStamped) -> None:
+        left_thrust_msg, right_thrust_msg = self._convert_to_thrust(msg)
+        self._left_pub.publish(left_thrust_msg)
+        self._right_pub.publish(right_thrust_msg)
+
+    def _convert_to_thrust(self, msg: TwistStamped) -> tuple[Float64, Float64]:
         fwd = msg.twist.linear.x * (
             _WAMV_LINEAR_DRAG + _WAMV_LINEAR_QUAD_DRAG * abs(msg.twist.linear.x)
         )
@@ -75,11 +80,11 @@ class ThrustMixerNode(Node):
 
         left_thrust_msg = Float64()
         left_thrust_msg.data = cmd_left
-        self._left_pub.publish(left_thrust_msg)
 
         right_thrust_msg = Float64()
         right_thrust_msg.data = cmd_right
-        self._right_pub.publish(right_thrust_msg)
+
+        return left_thrust_msg, right_thrust_msg
 
 
 def main(args: list[str] | None = None) -> None:
