@@ -52,6 +52,7 @@ WP_SPEED         1
 ARMING_REQUIRE   0
 
 # Faster rates for EKF integration
+INS_GYRO_FILTER  20
 MAV1_EXTRA1      50
 MAV1_EXT_STAT    5
 MAV1_POSITION    50
