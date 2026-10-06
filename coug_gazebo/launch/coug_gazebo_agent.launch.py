@@ -135,6 +135,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="imu_covariance",
             name="imu_covariance_node",
+            condition=IfCondition(is_agent(agent_ns, "rover1gz", "wamv1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,
@@ -146,6 +147,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="coug_gazebo",
             executable="mag_covariance",
             name="mag_covariance_node",
+            condition=IfCondition(is_agent(agent_ns, "rover1gz", "wamv1gz")),
             parameters=[
                 fleet_param_file,
                 agent_param_file,

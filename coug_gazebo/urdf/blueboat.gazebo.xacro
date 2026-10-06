@@ -139,7 +139,6 @@
       <always_on>true</always_on>
     </sensor>
   </gazebo>
-  <xacro:imu_sensors link="${tf_prefix}imu_link" />
   <xacro:gps_sensor link="${tf_prefix}gps_link" />
   <xacro:lidar_sensor link="${tf_prefix}lidar_link" />
   <xacro:rgb_camera_sensor link="${tf_prefix}depth_camera_link" />
