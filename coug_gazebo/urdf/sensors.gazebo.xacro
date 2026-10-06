@@ -191,6 +191,11 @@
               <far>15.0</far>
             </clip>
           </depth_camera>
+          <!-- https://support.stereolabs.com/hc/en-us/articles/24824513333015 -->
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
         </camera>
       </sensor>
     </gazebo>
@@ -226,12 +231,12 @@
     <gazebo reference="${link}">
       <sensor name="lidar" type="gpu_lidar">
         <always_on>true</always_on>
-        <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf -->
+        <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
         <update_rate>10</update_rate>
         <topic>/${agent_ns}/lidar</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <lidar>
-          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf -->
+          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
           <scan>
             <horizontal>
               <samples>1024</samples>
@@ -244,7 +249,7 @@
               <max_angle>${radians(21.2)}</max_angle>
             </vertical>
           </scan>
-          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf -->
+          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
           <range>
             <min>0.5</min>
             <max>90.0</max>
