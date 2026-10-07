@@ -24,7 +24,7 @@ class ImuCovarianceNode(Node):
 
         self.declare_parameter("orientation_noise_sigmas", [0.05, 0.05, 0.05])
         self.declare_parameter("input_topic", "camera/imu/data_gz")
-        self.declare_parameter("output_topic", "camera/imu/data_raw")
+        self.declare_parameter("output_topic", "camera/imu/data")
 
         self._orientation_noise_sigmas = self.get_parameter("orientation_noise_sigmas").value
         input_topic = self.get_parameter("input_topic").value
