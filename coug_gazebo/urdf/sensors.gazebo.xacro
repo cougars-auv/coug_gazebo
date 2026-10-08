@@ -92,8 +92,8 @@
         <topic>/${agent_ns}/camera/imu/mag</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <magnetometer>
-          <!-- https://support.sbg-systems.com/sc/el/latest/ellipse-documentation/hardware-documentation/aiding-sensors -->
-          <xacro:xyz_noise stddev="3.0e-7" />
+          <!-- https://github.com/stereolabs/zed-sdk/issues/487 -->
+          <xacro:xyz_noise stddev="5.0e-7" />
         </magnetometer>
       </sensor>
     </gazebo>

@@ -22,7 +22,7 @@ class MagCovarianceNode(Node):
     def __init__(self) -> None:
         super().__init__("mag_covariance_node")
 
-        self.declare_parameter("magnetic_field_noise_sigmas", [3.0e-07, 3.0e-07, 3.0e-07])
+        self.declare_parameter("magnetic_field_noise_sigmas", [5.0e-07, 5.0e-07, 5.0e-07])
         self.declare_parameter("input_topic", "camera/imu/mag_gz")
         self.declare_parameter("output_topic", "camera/imu/mag")
 
