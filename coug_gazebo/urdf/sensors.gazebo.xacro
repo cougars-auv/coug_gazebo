@@ -236,7 +236,8 @@
         <topic>/${agent_ns}/lidar</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <lidar>
-          <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf -->
+          <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf
+            IMPORTANT! 64 (not 32) to approximate the real non-linear beam distribution -->
           <scan>
             <horizontal>
               <samples>1800</samples>
@@ -244,7 +245,7 @@
               <max_angle>${pi}</max_angle>
             </horizontal>
             <vertical>
-              <samples>32</samples>
+              <samples>64</samples>
               <min_angle>${radians(-25)}</min_angle>
               <max_angle>${radians(15)}</max_angle>
             </vertical>
