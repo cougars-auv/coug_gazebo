@@ -231,32 +231,34 @@
     <gazebo reference="${link}">
       <sensor name="lidar" type="gpu_lidar">
         <always_on>true</always_on>
-        <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
+        <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf -->
         <update_rate>10</update_rate>
         <topic>/${agent_ns}/lidar</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <lidar>
-          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
+          <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf -->
           <scan>
             <horizontal>
-              <samples>1024</samples>
+              <samples>1800</samples>
               <min_angle>${-pi}</min_angle>
               <max_angle>${pi}</max_angle>
             </horizontal>
             <vertical>
-              <samples>64</samples>
-              <min_angle>${radians(-21.2)}</min_angle>
-              <max_angle>${radians(21.2)}</max_angle>
+              <samples>32</samples>
+              <min_angle>${radians(-25)}</min_angle>
+              <max_angle>${radians(15)}</max_angle>
             </vertical>
           </scan>
-          <!-- https://data.ouster.io/downloads/datasheets/datasheet-rev7p1-os1.pdf -->
+          <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf
+            https://github.com/ros-drivers/velodyne/blob/ros2/velodyne_pointcloud/config/VLP32C-velodyne_transform_node-params.yaml -->
           <range>
-            <min>0.5</min>
-            <max>90.0</max>
+            <min>0.9</min>
+            <max>200.0</max>
           </range>
+          <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf -->
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.01</stddev>
+            <stddev>0.015</stddev>
           </noise>
         </lidar>
       </sensor>
