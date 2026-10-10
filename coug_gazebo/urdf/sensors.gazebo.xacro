@@ -206,7 +206,7 @@
       <sensor name="boundingbox_camera" type="boundingbox_camera">
         <always_on>true</always_on>
         <update_rate>10</update_rate>
-        <topic>/${agent_ns}/camera/boxes</topic>
+        <topic>/${agent_ns}/camera/boundingbox</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <camera>
           <box_type>visible_2d</box_type>
