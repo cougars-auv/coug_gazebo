@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2026 BYU FROST Lab
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<sdf version="1.9" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="headless" default="true" />
+
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <xacro:unless value="$(arg headless)">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer">
+      <use_units_gauss>false</use_units_gauss>
+      <use_earth_frame_ned>false</use_earth_frame_ned>
+    </plugin>
+
+    <!-- Terrain: USGS 3DEP OPR 0.5 m DEM, NAD83(2011) / NAVD88 + GEOID18, shifted to ITRF2020 (~WGS 84)
+      ellipsoidal heights at epoch 2027.416 (2027-06-02, the WMM date). Aerial registered to the lidar.
+      NAD83-fixed ground drifts ~17.8 mm/yr from WGS 84 here (-15.3 mm/yr E, -9.1 mm/yr N). -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>38.406</latitude_deg>
+      <longitude_deg>-110.792</longitude_deg>
+      <elevation>1352.274</elevation>
+    </spherical_coordinates>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <specular>0 0 0 1</specular>
+      <direction>0 0.6 -0.6</direction>
+    </light>
+    <scene>
+      <sky />
+    </scene>
+
+    <physics type="dart">
+      <max_step_size>0.003</max_step_size>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
+
+    <model name="mdrs_terrain">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <pose>0 0 -13.8278 0 0 0</pose>
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
+              <size>2000.48828125 2000.48828125 71.5112</size>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <uri>$(find coug_gazebo)/models/urc/mdrs_terrain/height_map.png</uri>
+              <size>2000.00 2000.00 71.5112</size>
+              <pos>0 0 -13.8278</pos>
+              <texture>
+                <diffuse>$(find coug_gazebo)/models/urc/mdrs_terrain/aerial.jpg</diffuse>
+                <normal>$(find coug_gazebo)/models/urc/mdrs_terrain/normal_map.png</normal>
+                <size>2000</size>
+              </texture>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://urc_aruco_0_w_post</uri>
+      <name>aruco_0</name>
+      <pose>5.00 33.00 -0.707 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_1_w_post</uri>
+      <name>aruco_1</name>
+      <pose>90.38 25.88 -2.133 0 0 -2.44</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_2_w_post</uri>
+      <name>aruco_2</name>
+      <pose>64.88 42.12 -1.752 0 0 0.77</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_3_w_post</uri>
+      <name>aruco_3</name>
+      <pose>86.88 11.88 -2.818 0 0 0.04</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_4_w_post</uri>
+      <name>aruco_4</name>
+      <pose>51.38 29.62 -1.041 0 0 -1.53</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_5_w_post</uri>
+      <name>aruco_5</name>
+      <pose>107.62 41.88 -2.527 0 0 -1.48</pose>
+    </include>
+    <include>
+      <uri>model://urc_aruco_6_w_post</uri>
+      <name>aruco_6</name>
+      <pose>77.62 23.62 -2.708 0 0 2.51</pose>
+    </include>
+
+    <xacro:include filename="mdrs_boulder_field.xacro" />
+  </world>
+</sdf>
