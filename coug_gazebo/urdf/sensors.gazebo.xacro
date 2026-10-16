@@ -236,6 +236,7 @@
         <topic>/${agent_ns}/lidar</topic>
         <gz_frame_id>${link}</gz_frame_id>
         <lidar>
+          <visibility_mask>7</visibility_mask>
           <!-- https://data.ouster.io/downloads/datasheets/velodyne/63-9378_Rev-F_Ultra-Puck_Datasheet_Web.pdf
             IMPORTANT! 64 (not 32) to approximate the real non-linear beam distribution -->
           <scan>
